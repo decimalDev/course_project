@@ -50,21 +50,36 @@ void physics(Map &map, sf::Clock &clock,sf::Time &time1, sf::Time &time2){
 	//map.test2();
 }
 
-void PressedLeftButtonMouse(sf::Vector2f &localPosition,std::vector<sf::Vector2f> &lines, sf::RenderWindow &window){
+void PressedLeftButtonMouse(sf::Vector2f &localPosition,std::vector<sf::Vector2f> &lines, sf::RenderWindow &window,int &mode,sf::CircleShape &shape){
 	localPosition.x = (float) sf::Mouse::getPosition(window).x;
 	localPosition.y = (float) sf::Mouse::getPosition(window).y;
-	if(lines.size()>0&&
-		((localPosition.x-lines.back().x)*(localPosition.x-lines.back().x)+(localPosition.y-lines.back().y)*(localPosition.y-lines.back().y)>10000))
-		lines.push_back(localPosition);
-		else if(lines.size()==0) lines.push_back(localPosition);
-		
+	if(mode==0&&lines.size()>0&&
+		((localPosition.x-lines.back().x)*(localPosition.x-lines.back().x)+(localPosition.y-lines.back().y)*(localPosition.y-lines.back().y)>10000)){
+			lines.push_back(localPosition);
+			mode = ++mode%2;
+			shape.setFillColor(sf::Color::Red);
+		}
+		else if(lines.size()==0){
+			lines.push_back(localPosition);
+			
+		}
+	else if(mode==1){
+		for(int i = 0;i<lines.size();i++){
+		localPosition.x = (float) sf::Mouse::getPosition(window).x;
+		localPosition.y = (float) sf::Mouse::getPosition(window).y;
+		if((localPosition.x-lines[i].x)*(localPosition.x-lines[i].x) + (localPosition.y-lines[i].y)*(localPosition.y-lines[i].y)<50){
+			lines.push_back(lines[i]);
+			shape.setPosition(lines[i]);
+			shape.setFillColor(sf::Color::Green);
+			mode = ++mode%2;
+			break;
+		}
+		}
+	}
 }
 
 void PressedLControle(sf::Text &text,int &mode, int started){
-	mode = ++mode%2;
-	started = 0;
-	if(mode==0) text.setString("drawing mode");
-	else text.setString("editing mode");
+	
 }
 
 void Mode1(std::vector<sf::Vector2f> &lines, sf::Vector2f &localPosition, sf::CircleShape &shape, sf::RenderWindow &window){
@@ -73,7 +88,7 @@ void Mode1(std::vector<sf::Vector2f> &lines, sf::Vector2f &localPosition, sf::Ci
 		localPosition.y = (float) sf::Mouse::getPosition(window).y;
 		if((localPosition.x-lines[i].x)*(localPosition.x-lines[i].x) + (localPosition.y-lines[i].y)*(localPosition.y-lines[i].y)<2500)
 			shape.setPosition(lines[i]);
-		window.draw(shape);
+		
 	}
 }
 
@@ -140,7 +155,7 @@ int main(int argc,char** argv){
 				case sf::Event::Closed: window.close(); break;
 				
 				case sf::Event::KeyReleased: 
-					if (event.key.code==sf::Keyboard::LControl) PressedLControle(text,mode,started);
+					//if (event.key.code==sf::Keyboard::LControl) PressedLControle(text,mode,started);
 					if (event.key.code==sf::Keyboard::Escape){
 						map = generation(streets, lines, w_width, w_height);
 						start(map,text,mode,clock,started,time1);
@@ -148,8 +163,9 @@ int main(int argc,char** argv){
 				break;
 				
 				case sf::Event::MouseButtonReleased:
-				if(mode==0&&(event.mouseButton.button==sf::Mouse::Left)){
-					PressedLeftButtonMouse(localPosition, lines, window);
+				if((event.mouseButton.button==sf::Mouse::Left)){
+					PressedLeftButtonMouse(localPosition, lines, window,mode,shape);
+					if(lines.size()!=0) PressedLControle(text,mode,started);
 				}
 			}
 			
@@ -162,7 +178,7 @@ int main(int argc,char** argv){
 		
 		
 		window.clear(sf::Color::Black);
-		for(int i = 1;i<lines.size();i++){
+		for(int i = 1;i<lines.size();i+=2){
 			line[0].position = lines[i-1];
 			line[1].position = lines[i];
 			window.draw(line,2,sf::Lines);
@@ -170,6 +186,7 @@ int main(int argc,char** argv){
 		if(mode==1&&lines.size()>0) Mode1(lines, localPosition, shape, window);
 		window.draw(text);
 		window.draw(text1);
+		if(lines.size()!=0) window.draw(shape);
 		
 		if(started==1){
 			for(Machine &m: map.machines)
