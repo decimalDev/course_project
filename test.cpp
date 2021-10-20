@@ -1,4 +1,4 @@
-//second commit
+//third commit
 #include<SFML/Graphics.hpp>
 #include<vector>
 #include<cmath>
@@ -28,6 +28,7 @@ Map generation(std::vector<Street> &streets, std::vector<sf::Vector2f> &lines, i
 }
 
 void start(Map &map, sf::Text &text,int &mode, sf::Clock &clock, int &started, sf::Time &time1){
+	//map.crt_streets();
 	text.setString("started");
 	started = 1;
 	mode = 2;
@@ -46,6 +47,7 @@ void physics(Map &map, sf::Clock &clock,sf::Time &time1, sf::Time &time2){
 		}
 	}
 	time1 = time2;
+	//map.test2();
 }
 
 void PressedLeftButtonMouse(sf::Vector2f &localPosition,std::vector<sf::Vector2f> &lines, sf::RenderWindow &window){
