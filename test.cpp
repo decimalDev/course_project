@@ -1,4 +1,4 @@
-//third commit
+
 #include<SFML/Graphics.hpp>
 #include<vector>
 #include<cmath>
@@ -12,7 +12,7 @@ Street crt_street(int w_width, int w_height, std::vector<sf::Vector2f> &lines,in
 	CrossRoads cross[2];
 	cross[0] = CrossRoads(our_line1, w_width, w_height);
 	cross[1] = CrossRoads(our_line2, w_width, w_height);
-	Street street(cross[0], cross[1],i);
+	Street street(cross[0], cross[1],i/2);
 	//std::cout<<i<<std::endl;
 	//std::cout<<our_line1.x<<" "<<our_line1.y<<std::endl;
 	//std::cout<<our_line2.x<<" "<<our_line2.y<<std::endl;
@@ -20,7 +20,7 @@ Street crt_street(int w_width, int w_height, std::vector<sf::Vector2f> &lines,in
 }
 
 Map generation(std::vector<Street> &streets, std::vector<sf::Vector2f> &lines, int w_width, int w_height){
-	for(int i = 1;i<lines.size();i++){
+	for(int i = 1;i<lines.size();i+=2){
 		streets.push_back(crt_street(w_width, w_height, lines, i));
 	}
 	Map map(streets);
@@ -47,6 +47,7 @@ void physics(Map &map, sf::Clock &clock,sf::Time &time1, sf::Time &time2){
 		}
 	}
 	time1 = time2;
+	map.checking();
 	//map.test2();
 }
 

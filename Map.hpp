@@ -58,6 +58,7 @@ class Machine{
 	std::vector<Street> way;
 	Street street;
 	sf::RectangleShape rectangle;
+	sf::Color color;
 	
 	void generate_way(std::vector<Street> streets2){
 		way.push_back(street);
@@ -97,18 +98,22 @@ class Machine{
 		//std::cout<<"before"<<std::endl;
 		
 		generate_way(streets2);
+		color = sf::Color(rand()%255,rand()%255,rand()%255);
+		rectangle.setFillColor(color);
 
 	}
 	void move(float time){
 		x+=time*dx*velocity;
 		y+=time*dy*velocity;
 		rectangle.setPosition(sf::Vector2f(x,y));
+		rectangle.setRotation(atan(dy/dx)*180/3.14);//rad to grad
 	}
 	bool is_in_cross(){
 	return (((x - street.cross[1].point.x)*(x - street.cross[1].point.x) + (y - street.cross[1].point.y)*(y - street.cross[1].point.y))<100);
 	}
 	
 	void next_Street(){
+	if(way.size()==0) return;
 	way.erase(way.begin());
 	if(way.size()==0){
 		dx = 0;
@@ -142,8 +147,32 @@ class Map{
 	Map(std::vector<Street> &strts){
 		streets = strts;
 		crt_streets();
-		machines.push_back(Machine(streets[0],streets));
+		int n;
+		for(int i = 0;i<10;i++){
+		n = rand()%(streets.size());
+		machines.push_back(Machine(streets[n],streets));
+		}
 		
+	}
+	void checking(){
+	int k = 0;
+	int n = rand()%(streets.size()); 
+	/*
+		for(int i = 0;i<machines.size();i++){
+		for(int j = 0;j<machines.size();j++)
+		if(machines[j].dx==0&&machines[j].dy==0) k = 1;
+		if((machines[i].dx!=0||machines[i].dy!=0))  k=0;
+		else k = 1;
+		}
+		if(k==1) 
+			for(int i = 0;i<10;i++){
+		n = rand()%(streets.size());
+		machines.push_back(Machine(streets[n],streets));
+	*/
+	for(int j = 0;j<machines.size();j++)
+	if((machines[j].dx!=0||machines[j].dy!=0))  k++;
+		if(k<10) machines.push_back(Machine(streets[n],streets));
+	//}
 	}
 	
 	
