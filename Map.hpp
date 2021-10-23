@@ -27,10 +27,12 @@ class Street{
 	float length;
 	float right_dx;
 	float right_dy;
+	int is_last_street;
 	std::vector<Street> next_streets;
 	std::vector<Street> last_streets;
 	Street(){}
 	Street(CrossRoads crs1, CrossRoads crs2, int i){
+	is_last_street = 1;
 		cross[0] = crs1;
 		cross[1] = crs2;
 		number = i;
@@ -55,6 +57,8 @@ class Machine{
 	float dx;
 	float dy;
 	float velocity;
+	int street_count;
+	int is_way_completed;
 	std::vector<Street> way;
 	Street street;
 	sf::RectangleShape rectangle;
@@ -75,6 +79,19 @@ class Machine{
 				}
 				
 			}
+			if(str.next_streets.size()==0){
+				way.push_back(str);
+				return;
+			}
+			
+			if(way[0].number==str.number){
+				way.push_back(str);
+				break;
+			}
+			for(int i = 0;i<way.size();i++)
+			if(way[i].right_dx==-str.right_dx&&way[i].right_dy==-str.right_dy){
+				return;
+			}
 			way.push_back(str);
 			
 			}
@@ -83,6 +100,8 @@ class Machine{
 
 	}
 	Machine(Street street1, std::vector<Street> streets2){
+	street_count = 0;
+	is_way_completed = 0;
 		length = 50.f;
 		width = 10.f;
 		rectangle = sf::RectangleShape(sf::Vector2f(length,width));
@@ -113,14 +132,35 @@ class Machine{
 	}
 	
 	void next_Street(){
-	if(way.size()==0) return;
-	way.erase(way.begin());
+	if(way[street_count].is_last_street){
+		is_way_completed = 1;
+		dx = 0;
+		dy = 0;
+		return;
+	}
+	if(way.size()==0){
+	is_way_completed = 1;
+	return;
+	}
+	//way.erase(way.begin());
+	street_count++;
+	if(way.size()==street_count){
+		is_way_completed = 1;
+		dx = 0;
+		dy = 0;
+		return;
+	}
+	if(street_count==way.size()-1&&way[0].number == way.back().number) street_count = 0;
+	
 	if(way.size()==0){
 		dx = 0;
 		dy = 0;
 		return;
 	}
-	street = way[0];
+	
+	
+	
+	street = way[street_count];
 	dx = street.right_dx;
 	dy = street.right_dy;
 	std::cout<<"cur_street: "<<street.number<<std::endl;
@@ -138,8 +178,10 @@ class Map{
 	void crt_streets(){
 		for(int i = 0;i<streets.size();i++){
 			for(int j = 0;j<streets.size();j++)
-				if(find(streets[i],streets[j]))
+				if(find(streets[i],streets[j])){
 					streets[i].next_Street(streets[j]);
+					streets[i].is_last_street = 0;
+				}
 		}
 	}
 	
@@ -172,6 +214,9 @@ class Map{
 	for(int j = 0;j<machines.size();j++)
 	if((machines[j].dx!=0||machines[j].dy!=0))  k++;
 		if(k<10) machines.push_back(Machine(streets[n],streets));
+		
+		for(int j = 0;j<machines.size();j++)
+			if(machines[j].is_way_completed) machines.erase(machines.begin()+j);
 	//}
 	}
 	

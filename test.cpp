@@ -51,7 +51,7 @@ void physics(Map &map, sf::Clock &clock,sf::Time &time1, sf::Time &time2){
 	//map.test2();
 }
 
-void PressedLeftButtonMouse(sf::Vector2f &localPosition,std::vector<sf::Vector2f> &lines, sf::RenderWindow &window,int &mode,sf::CircleShape &shape){
+void PressedLeftButtonMouse(sf::Vector2f &localPosition,std::vector<sf::Vector2f> &lines, sf::RenderWindow &window,int &mode,sf::CircleShape &shape, sf::CircleShape &shape2){
 	localPosition.x = (float) sf::Mouse::getPosition(window).x;
 	localPosition.y = (float) sf::Mouse::getPosition(window).y;
 	if(mode==0&&lines.size()>0&&
@@ -76,6 +76,18 @@ void PressedLeftButtonMouse(sf::Vector2f &localPosition,std::vector<sf::Vector2f
 			break;
 		}
 		}
+	}else if(mode==3){
+		for(int i = 0;i<lines.size();i++){
+		localPosition.x = (float) sf::Mouse::getPosition(window).x;
+		localPosition.y = (float) sf::Mouse::getPosition(window).y;
+		if((localPosition.x-lines[i].x)*(localPosition.x-lines[i].x) + (localPosition.y-lines[i].y)*(localPosition.y-lines[i].y)<50){
+			lines.push_back(lines[i]);
+			shape2.setPosition(lines[i]);
+			mode = 1;
+			shape.setFillColor(sf::Color::Red);
+			break;
+		}
+	}
 	}
 }
 
@@ -89,6 +101,17 @@ void Mode1(std::vector<sf::Vector2f> &lines, sf::Vector2f &localPosition, sf::Ci
 		localPosition.y = (float) sf::Mouse::getPosition(window).y;
 		if((localPosition.x-lines[i].x)*(localPosition.x-lines[i].x) + (localPosition.y-lines[i].y)*(localPosition.y-lines[i].y)<2500)
 			shape.setPosition(lines[i]);
+		
+	}
+}
+
+void Mode3(std::vector<sf::Vector2f> &lines, sf::Vector2f &localPosition, sf::CircleShape &shape2, sf::RenderWindow &window){
+	for(int i = 0;i<lines.size();i++){
+	if(lines[i].x==lines.back().x&&lines[i].y==lines.back().y) continue;
+		localPosition.x = (float) sf::Mouse::getPosition(window).x;
+		localPosition.y = (float) sf::Mouse::getPosition(window).y;
+		if((localPosition.x-lines[i].x)*(localPosition.x-lines[i].x) + (localPosition.y-lines[i].y)*(localPosition.y-lines[i].y)<2500)
+			shape2.setPosition(lines[i]);
 		
 	}
 }
@@ -149,6 +172,10 @@ int main(int argc,char** argv){
 	shape.setFillColor(sf::Color::Red);
 	shape.setOrigin(2.5,2.5);
 	
+	sf::CircleShape shape2(5);
+	shape.setFillColor(sf::Color::White);
+	shape.setOrigin(2.5,2.5);
+	
 	std::vector<Street> streets;
 	
 	
@@ -186,19 +213,23 @@ int main(int argc,char** argv){
 				case sf::Event::KeyReleased: 
 					//if (event.key.code==sf::Keyboard::LControl) PressedLControle(text,mode,started);
 					if (event.key.code==sf::Keyboard::Escape){
-						if(mode!=2){
+						if(mode==1){
 							map = generation(streets, lines, w_width, w_height);
 							start(map,text,mode,clock,started,time1);
-						}else{ 
+						}else if(mode==2){ 
 						mode = 1;
 						started = 0;
+						}
+					}else if(event.key.code==sf::Keyboard::LAlt){
+						if(mode==0){
+							mode = 3;
 						}
 					}
 				break;
 				
 				case sf::Event::MouseButtonReleased:
 				if((event.mouseButton.button==sf::Mouse::Left)){
-					PressedLeftButtonMouse(localPosition, lines, window,mode,shape);
+					PressedLeftButtonMouse(localPosition, lines, window,mode,shape, shape2);
 					if(lines.size()!=0) PressedLControle(text,mode,started);
 				}
 			}
@@ -229,10 +260,13 @@ int main(int argc,char** argv){
 			window.draw(line,2,sf::Lines);
 		}
 		
-		if(mode==1&&lines.size()>0) Mode1(lines, localPosition, shape, window);
+		if(mode==1&&lines.size()>1) Mode1(lines, localPosition, shape, window);
+		if(mode==3&&lines.size()>0) Mode3(lines, localPosition, shape2, window);
 		window.draw(text);
 		window.draw(text1);
-		if(lines.size()!=0) window.draw(shape);
+		if(lines.size()>1) window.draw(shape);
+		if(mode==3&&lines.size()>1) window.draw(shape2);
+		
 		}
 		
 		if(mode==2){
@@ -245,7 +279,14 @@ int main(int argc,char** argv){
 			
 //}
 		window.display();
-	//	}
 	}
+//	}
 }
 //g++ test.cpp -o test.exe -I"C:\Users\Hp\Desktop\SFML-2.5.1\include" -L"C:\Users\Hp\Desktop\SFML-2.5.1\lib" -lsfml-graphics -lsfml-system -lsfml-network -lsfml-window -lsfml-audio -lopengl32
+
+
+
+/*
+	определить правило по которому будет строиться кооректное направление дороги
+	определить ограничения при построении графа которое не позволит программе путаться
+*/
