@@ -95,14 +95,16 @@ void Mode1(std::vector<sf::Vector2f> &lines, sf::Vector2f &localPosition, sf::Ci
 
 void draw_map(Map &map,sf::Clock &clock,sf::Time &time1, sf::Time &time2, sf::RenderWindow &window){
 	sf::Vertex line[2];
-	for(Machine &m: map.machines)
-		window.draw(m.rectangle);
 	
 	for(Street &s: map.streets){
 		line[0].position = s.cross[0].point;
 		line[1].position = s.cross[1].point;
 		window.draw(line,2,sf::Lines);
 	}
+	
+	for(Machine &m: map.machines)
+		window.draw(m.rectangle);
+	
 }
 
 int main(int argc,char** argv){
@@ -164,7 +166,7 @@ int main(int argc,char** argv){
 		sf::Event event;
 		while(window.pollEvent(event)){
 		
-		
+		/*
 		
 		if(mode == 3){
 			if(event.type==sf::Event::Closed){
@@ -176,7 +178,7 @@ int main(int argc,char** argv){
 			window.display();
 		}else{
 		
-		
+		*/
 		
 			switch(event.type){
 				case sf::Event::Closed: window.close(); break;
@@ -187,7 +189,10 @@ int main(int argc,char** argv){
 						if(mode!=2){
 							map = generation(streets, lines, w_width, w_height);
 							start(map,text,mode,clock,started,time1);
-						}else mode=0;
+						}else{ 
+						mode = 1;
+						started = 0;
+						}
 					}
 				break;
 				
@@ -207,33 +212,40 @@ int main(int argc,char** argv){
 		
 		
 		window.clear(sf::Color::Black);
+		/*
+		
+		
+		
+		if(mode=!2){
+			for(Machine &m: map.machines)
+			window.draw(m.rectangle);
+			physics(map, clock,time1,time2);
+		}
+		*/
+		if(mode!=2){
 		for(int i = 1;i<lines.size();i+=2){
 			line[0].position = lines[i-1];
 			line[1].position = lines[i];
 			window.draw(line,2,sf::Lines);
 		}
+		
 		if(mode==1&&lines.size()>0) Mode1(lines, localPosition, shape, window);
 		window.draw(text);
 		window.draw(text1);
 		if(lines.size()!=0) window.draw(shape);
-	//	/*
-		if(started==1){
-			for(Machine &m: map.machines)
-			window.draw(m.rectangle);
-			physics(map, clock,time1,time2);
+		}
+		
+		if(mode==2){
+		draw_map(map, clock, time1, time2, window);
+		physics(map, clock,time1,time2);
 		}
 		frame++;
-	//	*/
+	
 	//}else{
 			
 //}
 		window.display();
-		}
+	//	}
 	}
 }
 //g++ test.cpp -o test.exe -I"C:\Users\Hp\Desktop\SFML-2.5.1\include" -L"C:\Users\Hp\Desktop\SFML-2.5.1\lib" -lsfml-graphics -lsfml-system -lsfml-network -lsfml-window -lsfml-audio -lopengl32
-
-
-/*
-	переменные занести в отдельный файл
-	*/
