@@ -93,6 +93,18 @@ void Mode1(std::vector<sf::Vector2f> &lines, sf::Vector2f &localPosition, sf::Ci
 	}
 }
 
+void draw_map(Map &map,sf::Clock &clock,sf::Time &time1, sf::Time &time2, sf::RenderWindow &window){
+	sf::Vertex line[2];
+	for(Machine &m: map.machines)
+		window.draw(m.rectangle);
+	
+	for(Street &s: map.streets){
+		line[0].position = s.cross[0].point;
+		line[1].position = s.cross[1].point;
+		window.draw(line,2,sf::Lines);
+	}
+}
+
 int main(int argc,char** argv){
 	int w_width = 800;
 	int w_height = 800;
@@ -151,15 +163,31 @@ int main(int argc,char** argv){
 	while(window.isOpen()){
 		sf::Event event;
 		while(window.pollEvent(event)){
-		//if(started==0){
+		
+		
+		
+		if(mode == 3){
+			if(event.type==sf::Event::Closed){
+				window.close();
+			}
+			window.clear(sf::Color::Black);
+			//draw_map(map, clock, time1, time2, window);
+			physics(map, clock,time1,time2);
+			window.display();
+		}else{
+		
+		
+		
 			switch(event.type){
 				case sf::Event::Closed: window.close(); break;
 				
 				case sf::Event::KeyReleased: 
 					//if (event.key.code==sf::Keyboard::LControl) PressedLControle(text,mode,started);
 					if (event.key.code==sf::Keyboard::Escape){
-						map = generation(streets, lines, w_width, w_height);
-						start(map,text,mode,clock,started,time1);
+						if(mode!=2){
+							map = generation(streets, lines, w_width, w_height);
+							start(map,text,mode,clock,started,time1);
+						}else mode=0;
 					}
 				break;
 				
@@ -188,17 +216,19 @@ int main(int argc,char** argv){
 		window.draw(text);
 		window.draw(text1);
 		if(lines.size()!=0) window.draw(shape);
-		
+	//	/*
 		if(started==1){
 			for(Machine &m: map.machines)
 			window.draw(m.rectangle);
 			physics(map, clock,time1,time2);
 		}
 		frame++;
+	//	*/
 	//}else{
 			
 //}
 		window.display();
+		}
 	}
 }
 //g++ test.cpp -o test.exe -I"C:\Users\Hp\Desktop\SFML-2.5.1\include" -L"C:\Users\Hp\Desktop\SFML-2.5.1\lib" -lsfml-graphics -lsfml-system -lsfml-network -lsfml-window -lsfml-audio -lopengl32
