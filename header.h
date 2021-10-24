@@ -1,4 +1,4 @@
-//second commit
+
 #include<vector>
 #include<string>
 class Moveable{
@@ -10,13 +10,13 @@ class Moveable{
 	bool is_moving;
 	
 	public:
-	void move();
-	float[2] getPosition();
-	float getCur_Velocity();
-	float getMax_Velocity();
-	float[2] getDirection();
-	bool is_moving();
-	void stop();
+	virtual void move();
+	virtual float[2] getPosition();
+	virtual float getCur_Velocity();
+	virtual float getMax_Velocity();
+	virtual float[2] getDirection();
+	virtual bool is_moving();
+	virtual void stop();
 }
 
 class Transport:public Moveable{
@@ -29,12 +29,12 @@ class Transport:public Moveable{
 	bool is_in_accident;
 	
 	public:
-	string getNumber();
+	virtual string getNumber();
 	int[2] getSize();
 	int getWeight();
 	void turn_on_light();
 	void turn_off_light();
-	void braking();
+	virtual void braking();
 	void sound();
 }
 
@@ -58,18 +58,11 @@ class Car: public Transport{
 	private:
 	bool right_light, left_light;
 	
-	public:
-	bool state_right_light();
-	bool state_left_light();
-	void turn_on_right_light();
-	void turn_off_right_light();
-	void turn_on_left_light();
-	void turn_off_left_light();
-	
 }
 
 class Public_transport: public Transport{
 	private:
+	int number;
 	int number_of_place;
 	float price;
 	bool are_doors_open;
@@ -77,7 +70,7 @@ class Public_transport: public Transport{
 	vector<float[2]> station;
 	
 	public:
-	void open_doors();
+	virtual void open_doors();
 	bool is_Full();
 }
 
@@ -90,16 +83,6 @@ class Train: public Public_transport{
 }
 
 class Bus: public Public_transport{
-	private:
-	bool right_light, left_light;
-	
-	public:
-	bool state_right_light();
-	bool state_left_light();
-	void turn_on_right_light();
-	void turn_off_right_light();
-	void turn_on_left_light();
-	void turn_off_left_light();
 }
 
 /* Moveable
