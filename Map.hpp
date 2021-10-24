@@ -8,12 +8,10 @@ class CrossRoads{
 	public:
 	sf::Vector2f point;
 	float length;
-	float cos_angle;
 	int number;
 	CrossRoads(){}
 	CrossRoads(sf::Vector2f point, int w_width, int w_height){
 		length = sqrt((point.x-w_width)*(point.x-w_width) + (point.y-w_height)*(point.y-w_height));
-		cos_angle = (point.x-w_width)/length;
 		this->point = point;
 	}
 };
@@ -22,8 +20,6 @@ class Street{
 	public:
 	CrossRoads cross[2];
 	int number;
-	int counts_of_ways;
-	float width;
 	float length;
 	float right_dx;
 	float right_dy;
@@ -43,7 +39,7 @@ class Street{
 	void next_Street(Street &strt){
 		next_streets.push_back(strt);
 	}
-	void last_Street(Street strt){
+	void last_Street(Street &strt){
 		last_streets.push_back(strt);
 	}
 };
