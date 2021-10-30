@@ -6,6 +6,7 @@
 #include<fstream>
 #include "Machine.hpp"
 
+
 bool find(Street x, Street y){
 	return (x.cross[1].point == y.cross[0].point);
 }
@@ -66,18 +67,19 @@ class Map{
 	}
 	void load_map(){
 		std::ifstream file("Map.txt");
+		all_streets.clear();
+		machines.clear();
 		std::string s;
-		std::vector<Street> strs;
+		//std::vector<Street> strs;
 		Street a;
 		int size;
 		file>>s>>size;
 		for(int i = 0;i<size;i++){
 			file>>a;
-			strs.push_back(a);
-			std::cout<<a<<std::endl<<std::endl;
+			all_streets.push_back(a);
+			//std::cout<<a<<std::endl<<std::endl;
 		}
 		
-		all_streets = strs;
 	}
 	
 	

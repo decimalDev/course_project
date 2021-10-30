@@ -5,7 +5,6 @@
 #include<iostream>
 #include<fstream>
 #include"CrossRoads.hpp"
-
 class Street{
 	public:
 	CrossRoads cross[2];
@@ -50,7 +49,6 @@ class Street{
 	}
 	
 	friend std::istream& operator>>(std::istream& in,Street& r){
-	//std::cout<<"hi"<<std::endl;
 		std::string s;
 		char a;
 		in>>s;

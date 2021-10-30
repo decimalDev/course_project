@@ -13,9 +13,6 @@ Street crt_street(int w_width, int w_height, std::vector<sf::Vector2f> &lines,in
 	cross[0] = CrossRoads(our_line1);
 	cross[1] = CrossRoads(our_line2);
 	Street street(cross[0], cross[1],i/2);
-	//std::cout<<i<<std::endl;
-	//std::cout<<our_line1.x<<" "<<our_line1.y<<std::endl;
-	//std::cout<<our_line2.x<<" "<<our_line2.y<<std::endl;
 	return street;
 }
 
@@ -24,7 +21,6 @@ Map generation(std::vector<Street> &streets, std::vector<sf::Vector2f> &lines, i
 		streets.push_back(crt_street(w_width, w_height, lines, i));
 	}
 	
-	std::cout<<"generation";
 	Map map(streets);
 	return map;
 }
@@ -40,7 +36,6 @@ void start(Map &map, sf::Text &text,int &mode, sf::Clock &clock, int &started, s
 void physics(Map &map, sf::Clock &clock,sf::Time &time1, sf::Time &time2){
 	time2 = clock.getElapsedTime();
 	float t = (time2-time1).asSeconds();
-	//std::cout<<t;
 	for(Machine &m: map.machines){
 		m.move(t);
 		if(m.is_in_cross()){
@@ -65,7 +60,7 @@ void PressedLeftButtonMouse(sf::Vector2f &localPosition,std::vector<sf::Vector2f
 			lines.push_back(localPosition);
 			
 		}
-	else if(mode==1){ // mode = 1 режим когда надо выбрать точку чтобы перейти в режим 0 где мы создаем путьы
+	else if(mode==1){ // mode = 1 режим когда надо выбрать точку чтобы перейти в режим 0 где мы создаем путь
 		for(int i = 0;i<lines.size();i++){
 		localPosition.x = (float) sf::Mouse::getPosition(window).x;
 		localPosition.y = (float) sf::Mouse::getPosition(window).y;
@@ -90,10 +85,6 @@ void PressedLeftButtonMouse(sf::Vector2f &localPosition,std::vector<sf::Vector2f
 		}
 	}
 	}
-}
-
-void PressedLControle(sf::Text &text,int &mode, int started){
-	
 }
 
 void Mode1(std::vector<sf::Vector2f> &lines, sf::Vector2f &localPosition, sf::CircleShape &shape, sf::RenderWindow &window){
@@ -217,10 +208,10 @@ int main(int argc,char** argv){
 					if (event.key.code==sf::Keyboard::Escape){
 						if(mode==1){
 							map = generation(streets, lines, w_width, w_height);
-							std::cout<<"map generated"<<std::endl;
 							start(map,text,mode,clock,started,time1);
 						}else if(mode==2){ 
 						mode = 1;
+						map.machines.clear();
 						started = 0;
 						}
 					}else if(event.key.code==sf::Keyboard::LAlt){
@@ -231,14 +222,16 @@ int main(int argc,char** argv){
 						map.save();
 					}
 					else if(event.key.code==sf::Keyboard::L){
+						if(mode!=1) break;
+						lines.clear();
+						streets.clear();
 						map.load_map();
-						mode = 1;
-						std::vector<sf::Vector2f> lines2;
+						
 						for(int i = 0;i<map.all_streets.size();i++){
-							lines2.push_back(map.all_streets[i].cross[0].point);
-							lines2.push_back(map.all_streets[i].cross[1].point);
+							lines.push_back(map.all_streets[i].cross[0].point);
+							lines.push_back(map.all_streets[i].cross[1].point);
 						}
-						lines = lines2;
+						//lines = lines2;
 						start(map,text,mode,clock,started,time1);
 						//file>>s;
 						//std::cout<<s<<std::endl;
@@ -250,7 +243,7 @@ int main(int argc,char** argv){
 				case sf::Event::MouseButtonReleased:
 				if((event.mouseButton.button==sf::Mouse::Left)){
 					PressedLeftButtonMouse(localPosition, lines, window,mode,shape, shape2);
-					if(lines.size()!=0) PressedLControle(text,mode,started);
+					
 				}
 			}
 			

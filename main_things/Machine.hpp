@@ -40,7 +40,6 @@ class Machine{
 				way.push_back(str.number);
 				return;
 			}
-			std::cout<<num<<std::endl;
 			if(way[0]==num){
 				way.push_back(num);
 				break;
@@ -69,7 +68,6 @@ class Machine{
 		dy = street.right_dy;
 		velocity = 100;
 		rectangle.setPosition(sf::Vector2f(x,y));
-		//std::cout<<"before"<<std::endl;
 		
 		generate_way(all_streets);
 		color = sf::Color(rand()%255,rand()%255,rand()%255);
@@ -118,6 +116,5 @@ class Machine{
 	street = all_streets[way[street_count]];
 	dx = street.right_dx;
 	dy = street.right_dy;
-	std::cout<<"cur_street: "<<street.number<<std::endl;
 	}
 };
