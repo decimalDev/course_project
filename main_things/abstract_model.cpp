@@ -176,6 +176,7 @@ int main(int argc,char** argv){
 	sf::CircleShape shape2(5);
 	shape.setFillColor(sf::Color::White);
 	shape.setOrigin(2.5,2.5);
+	shape.setFillColor(sf::Color::Red);
 	
 	std::vector<Street> streets;
 	
@@ -232,7 +233,12 @@ int main(int argc,char** argv){
 					else if(event.key.code==sf::Keyboard::L){
 						map.load_map();
 						mode = 1;
-						//std::cout<<"map generated"<<std::endl;
+						std::vector<sf::Vector2f> lines2;
+						for(int i = 0;i<map.all_streets.size();i++){
+							lines2.push_back(map.all_streets[i].cross[0].point);
+							lines2.push_back(map.all_streets[i].cross[1].point);
+						}
+						lines = lines2;
 						start(map,text,mode,clock,started,time1);
 						//file>>s;
 						//std::cout<<s<<std::endl;
