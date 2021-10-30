@@ -1,0 +1,37 @@
+map_size: 3
+Street:
+CrossRoads: 193 577
+CrossRoads: 257 318
+number: 0
+length: 266.79
+right_dx: 0.239889
+right_dy: -0.9708
+is_last_street: 0
+next_streets: 
+size: 1
+1 
+
+Street:
+CrossRoads: 257 318
+CrossRoads: 453 578
+number: 1
+length: 325.601
+right_dx: 0.601964
+right_dy: 0.798523
+is_last_street: 0
+next_streets: 
+size: 1
+2 
+
+Street:
+CrossRoads: 453 578
+CrossRoads: 193 577
+number: 2
+length: 260.002
+right_dx: -0.999993
+right_dy: -0.00384613
+is_last_street: 0
+next_streets: 
+size: 1
+0 
+

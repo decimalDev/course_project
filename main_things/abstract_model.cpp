@@ -10,8 +10,8 @@ Street crt_street(int w_width, int w_height, std::vector<sf::Vector2f> &lines,in
 	sf::Vector2f our_line2 = lines[i];
 	//lines.pop_back();
 	CrossRoads cross[2];
-	cross[0] = CrossRoads(our_line1, w_width, w_height);
-	cross[1] = CrossRoads(our_line2, w_width, w_height);
+	cross[0] = CrossRoads(our_line1);
+	cross[1] = CrossRoads(our_line2);
 	Street street(cross[0], cross[1],i/2);
 	//std::cout<<i<<std::endl;
 	//std::cout<<our_line1.x<<" "<<our_line1.y<<std::endl;
@@ -23,12 +23,13 @@ Map generation(std::vector<Street> &streets, std::vector<sf::Vector2f> &lines, i
 	for(int i = 1;i<lines.size();i+=2){
 		streets.push_back(crt_street(w_width, w_height, lines, i));
 	}
+	
+	std::cout<<"generation";
 	Map map(streets);
 	return map;
 }
 
 void start(Map &map, sf::Text &text,int &mode, sf::Clock &clock, int &started, sf::Time &time1){
-	//map.crt_streets();
 	text.setString("started");
 	started = 1;
 	mode = 2;
@@ -43,7 +44,7 @@ void physics(Map &map, sf::Clock &clock,sf::Time &time1, sf::Time &time2){
 	for(Machine &m: map.machines){
 		m.move(t);
 		if(m.is_in_cross()){
-			m.next_Street();
+			m.next_Street(map.all_streets);
 		}
 	}
 	time1 = time2;
@@ -57,14 +58,14 @@ void PressedLeftButtonMouse(sf::Vector2f &localPosition,std::vector<sf::Vector2f
 	if(mode==0&&lines.size()>0&&
 		((localPosition.x-lines.back().x)*(localPosition.x-lines.back().x)+(localPosition.y-lines.back().y)*(localPosition.y-lines.back().y)>10000)){
 			lines.push_back(localPosition);
-			mode = ++mode%2;
+			mode = ++mode%2; //mode = 0 если точка не выбрана или когда уже выбираем 2ю точку
 			shape.setFillColor(sf::Color::Red);
 		}
 		else if(lines.size()==0){
 			lines.push_back(localPosition);
 			
 		}
-	else if(mode==1){
+	else if(mode==1){ // mode = 1 режим когда надо выбрать точку чтобы перейти в режим 0 где мы создаем путьы
 		for(int i = 0;i<lines.size();i++){
 		localPosition.x = (float) sf::Mouse::getPosition(window).x;
 		localPosition.y = (float) sf::Mouse::getPosition(window).y;
@@ -119,7 +120,7 @@ void Mode3(std::vector<sf::Vector2f> &lines, sf::Vector2f &localPosition, sf::Ci
 void draw_map(Map &map,sf::Clock &clock,sf::Time &time1, sf::Time &time2, sf::RenderWindow &window){
 	sf::Vertex line[2];
 	
-	for(Street &s: map.streets){
+	for(Street &s: map.all_streets){
 		line[0].position = s.cross[0].point;
 		line[1].position = s.cross[1].point;
 		window.draw(line,2,sf::Lines);
@@ -215,6 +216,7 @@ int main(int argc,char** argv){
 					if (event.key.code==sf::Keyboard::Escape){
 						if(mode==1){
 							map = generation(streets, lines, w_width, w_height);
+							std::cout<<"map generated"<<std::endl;
 							start(map,text,mode,clock,started,time1);
 						}else if(mode==2){ 
 						mode = 1;
@@ -224,6 +226,18 @@ int main(int argc,char** argv){
 						if(mode==0){
 							mode = 3;
 						}
+					}else if(event.key.code==sf::Keyboard::S){
+						map.save();
+					}
+					else if(event.key.code==sf::Keyboard::L){
+						map.load_map();
+						mode = 1;
+						//std::cout<<"map generated"<<std::endl;
+						start(map,text,mode,clock,started,time1);
+						//file>>s;
+						//std::cout<<s<<std::endl;
+						//file>>s;
+						//std::cout<<s<<std::endl;
 					}
 				break;
 				
