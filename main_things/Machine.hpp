@@ -67,7 +67,7 @@ class Machine{
 		street_count = 0;
 		way.push_back(street.number);
 		Street str = street;
-		
+		int flag = 1;
 		int num = -1;
 		int num_of_strs = 0;
 		while(num_of_strs<max_streets){
@@ -90,33 +90,46 @@ class Machine{
 				if(str.last_streets.size()==0) break;//когда крайняя точка
 					n = rand()%(str.last_streets.size());
 					num = str.last_streets[n];
-			}else{/*
-				if(rand()%2&&str.last_streets.size()>0){
-					
-					
-					if(way.size()==1){
-//					
+			}else{
+			
+				if(rand()%2&&way.size()==1&&str.last_streets.size()>0&&flag){
 						n = rand()%(str.last_streets.size());
 						num = str.last_streets[n];
+						
+						if(street.cross[0].number==all_streets->at(num).cross[1].number){
+							x = street.cross[0].point.x;
+							y = street.cross[0].point.y;
+							dx = -all_streets->at(num).street_dx;
+							dy = -all_streets->at(num).street_dy;
+							next_cross = all_streets->at(num).cross[0];
+							cur_cross = all_streets->at(num).cross[1];
+							std::cout<<"here detected"<<std::endl;
+							
+						}else{
+							x = street.cross[0].point.x;
+							y = street.cross[0].point.y;
+							dx = all_streets->at(num).street_dx;
+							dy = all_streets->at(num).street_dy;
+							next_cross = all_streets->at(num).cross[1];
+							cur_cross = all_streets->at(num).cross[0];
+						}
+						std::cout<<"out old str "<<street.number<<std::endl;
 						street = all_streets->at(num);
+						str = street;
+						
+						
 						way[0] = street.number;
+						
 						num = -1;
-						dx = -street.street_dx;
-						dy = -street.street_dy;
-						std::cout<<"here fuck"<<std::endl;
+						
+						std::cout<<"out new str "<<street.number<<std::endl;
+						flag = 0;
 						continue;
-//					*/
-					//}else if(way.size()>1&&str.last_streets.size()>1){
-					/*
-						if(str.last_streets[n]==way.back())
-						n = (n+1)%(str.last_streets.size());
-						num = str.last_streets[n];
-						std::cout<<"HI"<<std::endl;
-					
-					//}
-				}else{*/
+				}
+				
 				n = rand()%(str.next_streets.size());
 				num = str.next_streets[n];
+				
 		//}
 			}
 			
@@ -167,15 +180,16 @@ class Machine{
 		dy = street.street_dy;
 		
 		max_streets = 1+rand()%10;
-		
 		x = street.cross[0].point.x;
 		y = street.cross[0].point.y;
-		
-		velocity = 100;
-		rectangle.setPosition(sf::Vector2f(x,y));
 		next_cross = street.cross[1];
 		cur_cross = street.cross[0];
 		generate_way();
+		
+		velocity = 100;
+		rectangle.setPosition(sf::Vector2f(x,y));
+		
+		
 		//generate()
 		color = sf::Color(rand()%255,rand()%255,rand()%255);
 		rectangle.setFillColor(color);

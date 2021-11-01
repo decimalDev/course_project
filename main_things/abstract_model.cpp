@@ -212,6 +212,10 @@ int main(int argc,char** argv){
 						}else if(mode==2){ 
 						mode = 1;
 						map.machines.clear();
+						map.all_streets.clear();
+						map.all_cross_roads.clear();
+						streets.clear();
+						
 						started = 0;
 						}
 					}else if(event.key.code==sf::Keyboard::LAlt){

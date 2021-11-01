@@ -47,6 +47,7 @@ class Map{
 		for(int i = 0;i<all_streets.size();i++){
 			all_streets[i].number = i;
 		}
+		std::cout<<"size of streets "<<all_streets.size()<<std::endl;
 		crt_streets();
 		int j = 0;
 		int flag1 = 1;
@@ -89,9 +90,18 @@ class Map{
 		for(int i = 0;i<all_cross_roads.size();i++) std::cout<<all_cross_roads[i].number<<" ";//here debug
 		std::cout<<std::endl;
 		
-		std::cout<<"streets: ";
-		for(int i = 0;i<all_streets.size();i++) std::cout<<all_streets[i].number<<" ";//here debug
+		std::cout<<"streets: "<<std::endl;
+		for(int i = 0;i<all_streets.size();i++){
+		std::cout<<all_streets[i].number<<" ";//here debug
 		std::cout<<std::endl;
+		std::cout<<"last_streets: ";
+		for(int j = 0;j<all_streets[i].last_streets.size();j++) std::cout<<all_streets[i].last_streets[j]<<" ";
+		std::cout<<std::endl;
+		std::cout<<"next_streets: ";
+		for(int j = 0;j<all_streets[i].next_streets.size();j++) std::cout<<all_streets[i].next_streets[j]<<" ";
+		std::cout<<std::endl;
+		}
+		
 		
 		for(int i = 0;i<all_streets.size();i++) std::cout<<"this street: "<<all_streets[i].number<<" "<<all_streets[i].cross[0].number<<" "<<all_streets[i].cross[1].number<<std::endl;//here debug
 		std::cout<<std::endl;
