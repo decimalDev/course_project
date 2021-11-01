@@ -83,10 +83,18 @@ class Machine{
 		
 			if(num!=-1&&str.cross[1].number==all_streets->at(way[way.size()-2]).cross[1].number){
 				if(str.last_streets.size()==0) break;//когда крайняя точка
+				
 				n = rand()%(str.last_streets.size());
 				num = str.last_streets[n];
 				
 			}else if(num!=-1&&str.cross[1].number==all_streets->at(way[way.size()-2]).cross[0].number){
+				if(str.last_streets.size()==0) break;//когда крайняя точка
+				
+					n = rand()%(str.last_streets.size());
+					num = str.last_streets[n];
+					
+			}else if(str.cross[1].number==cur_cross.number){
+			
 				if(str.last_streets.size()==0) break;//когда крайняя точка
 					n = rand()%(str.last_streets.size());
 					num = str.last_streets[n];
