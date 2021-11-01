@@ -86,18 +86,19 @@ class Machine{
 				
 				n = rand()%(str.last_streets.size());
 				num = str.last_streets[n];
-				
+				std::cout<<"what 1"<<std::endl;
 			}else if(num!=-1&&str.cross[1].number==all_streets->at(way[way.size()-2]).cross[0].number){
 				if(str.last_streets.size()==0) break;//когда крайняя точка
 				
 					n = rand()%(str.last_streets.size());
 					num = str.last_streets[n];
-					
-			}else if(str.cross[1].number==cur_cross.number){
+					std::cout<<"what 2"<<std::endl;
+			}else if(num==-1&&str.cross[1].number==cur_cross.number){
 			
 				if(str.last_streets.size()==0) break;//когда крайняя точка
 					n = rand()%(str.last_streets.size());
 					num = str.last_streets[n];
+					std::cout<<"what 3"<<std::endl;
 			}else{
 			
 				if(rand()%2&&way.size()==1&&str.last_streets.size()>0&&flag){
