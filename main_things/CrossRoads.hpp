@@ -9,6 +9,7 @@
 class CrossRoads{
 	public:
 	sf::Vector2f point;
+	int number;
 	CrossRoads(){}
 	CrossRoads(sf::Vector2f point){
 		this->point = point;
@@ -31,6 +32,7 @@ class CrossRoads{
 	}
 	CrossRoads& operator=(const CrossRoads& r){
 		this->point = r.point;
+		this->number = r.number;
 		return *this;
 	}
 };

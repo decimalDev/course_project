@@ -12,7 +12,7 @@ Street crt_street(int w_width, int w_height, std::vector<sf::Vector2f> &lines,in
 	CrossRoads cross[2];
 	cross[0] = CrossRoads(our_line1);
 	cross[1] = CrossRoads(our_line2);
-	Street street(cross[0], cross[1],i/2);
+	Street street(cross[0], cross[1]);
 	return street;
 }
 
@@ -222,7 +222,7 @@ int main(int argc,char** argv){
 						map.save();
 					}
 					else if(event.key.code==sf::Keyboard::L){
-						if(mode!=1) break;
+						if(mode==1||mode==2){
 						lines.clear();
 						streets.clear();
 						map.load_map();
@@ -233,10 +233,7 @@ int main(int argc,char** argv){
 						}
 						//lines = lines2;
 						start(map,text,mode,clock,started,time1);
-						//file>>s;
-						//std::cout<<s<<std::endl;
-						//file>>s;
-						//std::cout<<s<<std::endl;
+						}
 					}
 				break;
 				

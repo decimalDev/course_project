@@ -10,26 +10,25 @@ class Street{
 	CrossRoads cross[2];
 	int number;
 	float length;
-	float right_dx;
-	float right_dy;
+	float street_dx;
+	float street_dy;
 	int is_last_street;
 	std::vector<int> next_streets;
-	std::vector<Street> last_streets;
+	std::vector<int> last_streets;
 	Street(){}
-	Street(CrossRoads crs1, CrossRoads crs2, int i){
+	Street(CrossRoads crs1, CrossRoads crs2){
 	is_last_street = 1;
 		cross[0] = crs1;
 		cross[1] = crs2;
-		number = i;
 		length = sqrt((cross[1].point.x - cross[0].point.x)*(cross[1].point.x - cross[0].point.x) + (cross[1].point.y - cross[0].point.y)*(cross[1].point.y - cross[0].point.y));
-		right_dx = (cross[1].point.x - cross[0].point.x)/length;
-		right_dy = (cross[1].point.y - cross[0].point.y)/length;
+		street_dx = (cross[1].point.x - cross[0].point.x)/length;
+		street_dy = (cross[1].point.y - cross[0].point.y)/length;
 	}
 	void next_Street(Street &strt){
 		next_streets.push_back(strt.number);
 	}
 	void last_Street(Street &strt){
-		last_streets.push_back(strt);
+		last_streets.push_back(strt.number);
 	}
 //	/*
 	friend std::ostream& operator<<(std::ostream& out,const Street& s){
@@ -37,8 +36,8 @@ class Street{
 		out<<"Street:\n"<<s.cross[0]<<s.cross[1];
 		out<<"number: "<<s.number<<std::endl;
 		out<<"length: "<<s.length<<std::endl;
-		out<<"right_dx: "<<s.right_dx<<std::endl;
-		out<<"right_dy: "<<s.right_dy<<std::endl;
+		out<<"street_dx: "<<s.street_dx<<std::endl;
+		out<<"street_dy: "<<s.street_dy<<std::endl;
 		out<<"is_last_street: "<<s.is_last_street<<std::endl;
 		out<<"next_streets: "<<std::endl;
 		out<<"size: "<<s.next_streets.size()<<std::endl;
@@ -61,9 +60,9 @@ class Street{
 		
 		in>>r.length; in>>s;
 		
-		in>>r.right_dx; in>>s;
+		in>>r.street_dx; in>>s;
 		
-		in>>r.right_dy; in>>s;
+		in>>r.street_dy; in>>s;
 		
 		in>>r.is_last_street; in>>s;
 		in>>s; // read size
@@ -78,5 +77,4 @@ class Street{
 		r.next_streets = streets;
 		return in;
 	}
-//	}*/
 };
