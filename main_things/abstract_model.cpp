@@ -3,7 +3,7 @@
 #include<vector>
 #include<cmath>
 #include<string>
-#include "Map.hpp"
+#include "AbstractModel.hpp"
 #include<iostream>
 Street crt_street(int w_width, int w_height, std::vector<sf::Vector2f> &lines,int i){
 	sf::Vector2f our_line1 = lines[i-1];
@@ -16,16 +16,16 @@ Street crt_street(int w_width, int w_height, std::vector<sf::Vector2f> &lines,in
 	return street;
 }
 
-Map generation(std::vector<Street> &streets, std::vector<sf::Vector2f> &lines, int w_width, int w_height){
+AbstractModel generation(std::vector<Street> &streets, std::vector<sf::Vector2f> &lines, int w_width, int w_height){
 	for(int i = 1;i<lines.size();i+=2){
 		streets.push_back(crt_street(w_width, w_height, lines, i));
 	}
 	
-	Map map(streets);
-	return map;
+	AbstractModel abstractModel(streets);
+	return abstractModel;
 }
 
-void start(Map &map, sf::Text &text,int &mode, sf::Clock &clock, int &started, sf::Time &time1){
+void start(AbstractModel &abstractModel, sf::Text &text,int &mode, sf::Clock &clock, int &started, sf::Time &time1){
 	text.setString("started");
 	started = 1;
 	mode = 2;
@@ -33,18 +33,18 @@ void start(Map &map, sf::Text &text,int &mode, sf::Clock &clock, int &started, s
 	time1 = clock.getElapsedTime();
 }
 
-void physics(Map &map, sf::Clock &clock,sf::Time &time1, sf::Time &time2){
+void physics(AbstractModel &abstractModel, sf::Clock &clock,sf::Time &time1, sf::Time &time2){
 	time2 = clock.getElapsedTime();
 	float t = (time2-time1).asSeconds();
-	for(Machine &m: map.machines){
+	for(Machine &m: abstractModel.machines){
 		m.move(t);
 		if(m.is_in_cross()){
-			m.next_Street(map.all_streets);
+			m.next_Street(abstractModel.all_streets);
 		}
 	}
 	time1 = time2;
-	map.checking();
-	//map.test2();
+	abstractModel.checking();
+	//AbstractModel.test2();
 }
 
 void PressedLeftButtonMouse(sf::Vector2f &localPosition,std::vector<sf::Vector2f> &lines, sf::RenderWindow &window,int &mode,sf::CircleShape &shape, sf::CircleShape &shape2){
@@ -108,21 +108,21 @@ void Mode3(std::vector<sf::Vector2f> &lines, sf::Vector2f &localPosition, sf::Ci
 	}
 }
 
-void draw_map(Map &map,sf::Clock &clock,sf::Time &time1, sf::Time &time2, sf::RenderWindow &window){
+void draw_AbstractModel(AbstractModel &abstractModel,sf::Clock &clock,sf::Time &time1, sf::Time &time2, sf::RenderWindow &window){
 	sf::Vertex line[2];
 	
-	for(Street &s: map.all_streets){
+	for(Street &s: abstractModel.all_streets){
 		line[0].position = s.cross[0].point;
 		line[1].position = s.cross[1].point;
 		window.draw(line,2,sf::Lines);
 	}
 	
-	for(Machine &m: map.machines)
+	for(Machine &m: abstractModel.machines)
 		window.draw(m.rectangle);
 	
 }
 
-int main(int argc,char** argv){
+AbstractModel abstract_model_view(){
 	int w_width = 800;
 	int w_height = 800;
 	sf::RenderWindow window(sf::VideoMode(w_width,w_height),"picture");
@@ -172,9 +172,9 @@ int main(int argc,char** argv){
 	std::vector<Street> streets;
 	
 	
+	int exit = 0;
 	
-	
-	Map map;
+	AbstractModel abstractModel;
 	
 	float frametime = 0;
 	int frame = 0;
@@ -186,20 +186,6 @@ int main(int argc,char** argv){
 		sf::Event event;
 		while(window.pollEvent(event)){
 		
-		/*
-		
-		if(mode == 3){
-			if(event.type==sf::Event::Closed){
-				window.close();
-			}
-			window.clear(sf::Color::Black);
-			//draw_map(map, clock, time1, time2, window);
-			physics(map, clock,time1,time2);
-			window.display();
-		}else{
-		
-		*/
-		
 			switch(event.type){
 				case sf::Event::Closed: window.close(); break;
 				
@@ -207,13 +193,13 @@ int main(int argc,char** argv){
 					//if (event.key.code==sf::Keyboard::LControl) PressedLControle(text,mode,started);
 					if (event.key.code==sf::Keyboard::Escape){
 						if(mode==1){
-							map = generation(streets, lines, w_width, w_height);
-							start(map,text,mode,clock,started,time1);
+							abstractModel = generation(streets, lines, w_width, w_height);
+							start(abstractModel,text,mode,clock,started,time1);
 						}else if(mode==2){ 
 						mode = 1;
-						map.machines.clear();
-						map.all_streets.clear();
-						map.all_cross_roads.clear();
+						abstractModel.machines.clear();
+						abstractModel.all_streets.clear();
+						abstractModel.all_cross_roads.clear();
 						streets.clear();
 						
 						started = 0;
@@ -223,20 +209,20 @@ int main(int argc,char** argv){
 							mode = 3;
 						}
 					}else if(event.key.code==sf::Keyboard::S){
-						map.save();
+						abstractModel.save();
 					}
 					else if(event.key.code==sf::Keyboard::L){
 						if(mode==1||mode==2){
 						lines.clear();
 						streets.clear();
-						map.load_map();
+						abstractModel.load_AbstractModel();
 						
-						for(int i = 0;i<map.all_streets.size();i++){
-							lines.push_back(map.all_streets[i].cross[0].point);
-							lines.push_back(map.all_streets[i].cross[1].point);
+						for(int i = 0;i<abstractModel.all_streets.size();i++){
+							lines.push_back(abstractModel.all_streets[i].cross[0].point);
+							lines.push_back(abstractModel.all_streets[i].cross[1].point);
 						}
 						//lines = lines2;
-						start(map,text,mode,clock,started,time1);
+						start(abstractModel,text,mode,clock,started,time1);
 						}
 					}
 				break;
@@ -257,16 +243,7 @@ int main(int argc,char** argv){
 		
 		
 		window.clear(sf::Color::Black);
-		/*
-		
-		
-		
-		if(mode=!2){
-			for(Machine &m: map.machines)
-			window.draw(m.rectangle);
-			physics(map, clock,time1,time2);
-		}
-		*/
+
 		if(mode!=2){
 		for(int i = 1;i<lines.size();i+=2){
 			line[0].position = lines[i-1];
@@ -284,8 +261,8 @@ int main(int argc,char** argv){
 		}
 		
 		if(mode==2){
-		draw_map(map, clock, time1, time2, window);
-		physics(map, clock,time1,time2);
+		draw_AbstractModel(abstractModel, clock, time1, time2, window);
+		physics(abstractModel, clock,time1,time2);
 		}
 		frame++;
 	
@@ -295,6 +272,7 @@ int main(int argc,char** argv){
 		window.display();
 	}
 //	}
+	return abstractModel;
 }
 //g++ abstract_model.cpp -o test.exe -I"C:\Users\Hp\Desktop\SFML-2.5.1\include" -L"C:\Users\Hp\Desktop\SFML-2.5.1\lib" -lsfml-graphics -lsfml-system -lsfml-network -lsfml-window -lsfml-audio -lopengl32
 

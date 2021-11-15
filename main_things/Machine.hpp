@@ -26,41 +26,6 @@ class Machine{
 	sf::RectangleShape rectangle;
 	sf::Color color;
 	std::vector<Street>* all_streets;
-	/*
-	void generate_way(std::vector<Street> &all_streets){
-	this->all_streets = &all_streets;
-		way.push_back(street.number);
-		Street str = street;
-		int num;
-		
-		while(!str.next_streets.empty()){
-			if(str.next_streets.size()==0){
-				return;
-			}
-			int n = rand()%(str.next_streets.size());
-			num = str.next_streets[n];
-			
-			str = all_streets[num];
-			
-			if(str.next_streets.size()==0){
-				way.push_back(str.number);
-				return;
-			}
-			if(way[0]==num){
-				way.push_back(num);
-				break;
-			}
-			for(int i = 0;i<way.size();i++)
-			if(all_streets[way[i]].street_dx==-str.street_dx&&all_streets[way[i]].street_dy==-str.street_dy){
-				way.push_back(num);
-				return;
-			}
-			way.push_back(num);
-			
-			}
-
-	}
-	*/
 	
 	void generate_way(){
 		srand(time(0));
