@@ -29,23 +29,11 @@ void start(AbstractModel &abstractModel, sf::Text &text,int &mode, sf::Clock &cl
 	text.setString("started");
 	started = 1;
 	mode = 2;
-	clock.restart();
-	time1 = clock.getElapsedTime();
+	abstractModel.clock.restart();
+	abstractModel.time1 = clock.getElapsedTime();
 }
 
-void physics(AbstractModel &abstractModel, sf::Clock &clock,sf::Time &time1, sf::Time &time2){
-	time2 = clock.getElapsedTime();
-	float t = (time2-time1).asSeconds();
-	for(Machine &m: abstractModel.machines){
-		m.move(t);
-		if(m.is_in_cross()){
-			m.next_Street(abstractModel.all_streets);
-		}
-	}
-	time1 = time2;
-	abstractModel.checking();
-	//AbstractModel.test2();
-}
+
 
 void PressedLeftButtonMouse(sf::Vector2f &localPosition,std::vector<sf::Vector2f> &lines, sf::RenderWindow &window,int &mode,sf::CircleShape &shape, sf::CircleShape &shape2){
 	localPosition.x = (float) sf::Mouse::getPosition(window).x;
@@ -262,7 +250,7 @@ AbstractModel abstract_model_view(){
 		
 		if(mode==2){
 		draw_AbstractModel(abstractModel, clock, time1, time2, window);
-		physics(abstractModel, clock,time1,time2);
+		abstractModel.physics();
 		}
 		frame++;
 	

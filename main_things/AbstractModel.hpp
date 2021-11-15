@@ -13,6 +13,10 @@ class AbstractModel{
 	std::vector<Machine> machines;
 	std::vector<CrossRoads> all_cross_roads;
 	
+	sf::Time time1;
+	sf::Time time2;
+	sf::Clock clock;
+	
 	void crt_streets(){
 		for(int i = 0;i<all_streets.size();i++){
 			for(int j = 0;j<all_streets.size();j++){
@@ -159,4 +163,18 @@ class AbstractModel{
 		this->all_cross_roads = a.all_cross_roads;
 		return *this;
 	}
+	
+	void physics(){
+	time2 = clock.getElapsedTime();
+	float t = (time2-time1).asSeconds();
+	for(Machine &m: machines){
+		m.move(t);
+		if(m.is_in_cross()){
+			m.next_Street(all_streets);
+		}
+	}
+	time1 = time2;
+	checking();
+	//AbstractModel.test2();
+}
 };
