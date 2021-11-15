@@ -1,4 +1,5 @@
 #include "abstract_model.cpp"
+//#include "header.hpp"
 
 int street_width = 60;
 int w_width1 = 800,w_height1 = 800;
@@ -17,6 +18,22 @@ class Map_Street{
 	}
 };
 
+class Map_Machine{
+	public:
+	sf::RectangleShape rectangle;
+	Machine *machine;
+	Map_Machine(Machine &m){
+		machine = &m;
+		float length = 20.f;
+		float width = 10.f;
+		rectangle = sf::RectangleShape(sf::Vector2f(length,width));
+		rectangle.setOrigin(length/2,width/2);
+		rectangle.setPosition(machine->x,machine->y);
+		rectangle.setRotation(atan(machine->dy/machine->dx)*180/3.14);
+		rectangle.setFillColor(sf::Color::Red);
+	}
+};
+
 
 class Map{
 	public:
@@ -30,6 +47,10 @@ class Map{
 		for(Street &s: abstract_model->all_streets){
 			Map_Street str(s);
 			window.draw(str.rectangle);
+		}
+		for(Machine &s: abstract_model->machines){
+			Map_Machine mach(s);
+			window.draw(mach.rectangle);
 		}
 	}
 	
