@@ -86,6 +86,7 @@ class Machine{
 							dy = all_streets->at(num).street_dy;
 							next_cross = all_streets->at(num).cross[1];
 							cur_cross = all_streets->at(num).cross[0];
+							std::cout<<"I see"<<std::endl;
 						}
 						std::cout<<"out old str "<<street.number<<std::endl;
 						street = all_streets->at(num);
@@ -160,7 +161,9 @@ class Machine{
 		cur_cross = street.cross[0];
 		generate_way();
 		
-		velocity = 100;
+		srand(time(0));
+		
+		velocity = 50+rand()%150;
 		rectangle.setPosition(sf::Vector2f(x,y));
 		
 		
@@ -173,14 +176,29 @@ class Machine{
 		for(int i = 0;i<way.size();i++) std::cout<<way[i]<<" ";
 		std::cout<<std::endl;
 		
+		std::cout<<"car x "<<x<<" car y "<<y<<std::endl;
+		std::cout<<"rectangle x"<<rectangle.getPosition().x<<" rectangle y "<<rectangle.getPosition().y<<std::endl;
+		std::cout<<"street x"<<street.cross[0].point.x<<" street y "<<street.cross[0].point.y<<std::endl;
+		std::cout<<std::endl;
+		
 	}
 	
 	
 	void move(float time){
-		x+=time*dx*velocity;
+	/* debug
+		std::cout<<"car x "<<x<<" car y "<<y<<std::endl;
+		std::cout<<"car dx "<<dx<<" car dy "<<dy<<std::endl;
+		std::cout<<"$time = "<<time<<std::endl;
+	*/
+		x+=time*dx*velocity;//troubles in time
 		y+=time*dy*velocity;
 		rectangle.setPosition(sf::Vector2f(x,y));
 		rectangle.setRotation(atan(dy/dx)*180/3.14);//rad to grad
+		/* debug
+		std::cout<<"car_next x "<<x<<" car_next y "<<y<<std::endl;
+		std::cout<<"car_next dx "<<dx<<" car_next dy "<<dy<<std::endl;
+		*/
+		
 	}
 	
 	

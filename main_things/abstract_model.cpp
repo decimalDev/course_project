@@ -29,7 +29,7 @@ void start(AbstractModel &abstractModel, sf::Text &text,int &mode, sf::Clock &cl
 	text.setString("started");
 	started = 1;
 	mode = 2;
-	abstractModel.clock.restart();
+	//abstractModel.clock.restart();
 	abstractModel.time1 = clock.getElapsedTime();
 }
 
@@ -196,10 +196,10 @@ AbstractModel abstract_model_view(){
 						if(mode==0){
 							mode = 3;
 						}
-					}else if(event.key.code==sf::Keyboard::S){
+					}else if(event.key.code==sf::Keyboard::S){ //save map not avaible
 						abstractModel.save();
 					}
-					else if(event.key.code==sf::Keyboard::L){
+					else if(event.key.code==sf::Keyboard::L){ //loading map not avaible
 						if(mode==1||mode==2){
 						lines.clear();
 						streets.clear();
@@ -258,15 +258,9 @@ AbstractModel abstract_model_view(){
 			
 //}
 		window.display();
+		//std::cout<<"mouse x = "<<sf::Mouse::getPosition(window).x<<" y = "<<sf::Mouse::getPosition(window).y<<std::endl;//debug
 	}
 //	}
 	return abstractModel;
 }
 //g++ abstract_model.cpp -o test.exe -I"C:\Users\Hp\Desktop\SFML-2.5.1\include" -L"C:\Users\Hp\Desktop\SFML-2.5.1\lib" -lsfml-graphics -lsfml-system -lsfml-network -lsfml-window -lsfml-audio -lopengl32
-
-
-
-/*
-	определить правило по которому будет строиться кооректное направление дороги
-	определить ограничения при построении графа которое не позволит программе путаться
-*/

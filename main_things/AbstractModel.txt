@@ -1,0 +1,37 @@
+AbstractModel_size: 3
+Street:
+CrossRoads: 185 526
+CrossRoads: 502 175
+number: 0
+length: 472.959
+street_dx: 0.670249
+street_dy: -0.742137
+is_last_street: 0
+next_streets: 
+size: 1
+1 
+
+Street:
+CrossRoads: 502 175
+CrossRoads: 622 659
+number: 1
+length: 498.654
+street_dx: 0.240648
+street_dy: 0.970613
+is_last_street: 0
+next_streets: 
+size: 1
+2 
+
+Street:
+CrossRoads: 622 659
+CrossRoads: 185 526
+number: 2
+length: 456.791
+street_dx: -0.956674
+street_dy: -0.291162
+is_last_street: 0
+next_streets: 
+size: 1
+0 
+

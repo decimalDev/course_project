@@ -13,7 +13,9 @@ class Map_Street{
 		rectangle = sf::RectangleShape(sf::Vector2f(street->length,street_width));
 		rectangle.setOrigin(0,street_width/2);
 		rectangle.setPosition(street->cross[0].point);
+		if(street->street_dx>0)
 		rectangle.setRotation(atan(street->street_dy/street->street_dx)*180/3.14);
+	else rectangle.setRotation(atan(street->street_dy/street->street_dx)*180/3.14+180);
 		rectangle.setFillColor(sf::Color(200,200,200));
 	}
 };
@@ -63,12 +65,13 @@ class Map{
 				switch(event.type){
 					case sf::Event::Closed: window.close(); break;
 				}
-				abstract_model->physics();
-				//window.clear(sf::Color::Green);
-				draw(window);
+				
 				
 			}
+			window.clear(sf::Color::Green);
+			draw(window);
 			window.display();
+			abstract_model->physics();
 		}
 	}
 	

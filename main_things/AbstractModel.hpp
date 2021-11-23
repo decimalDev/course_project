@@ -12,7 +12,7 @@ class AbstractModel{
 	std::vector<Street> all_streets;
 	std::vector<Machine> machines;
 	std::vector<CrossRoads> all_cross_roads;
-	
+	int count_of_cars = 5;
 	sf::Time time1;
 	sf::Time time2;
 	sf::Clock clock;
@@ -45,6 +45,7 @@ class AbstractModel{
 	}
 	
 	AbstractModel(){}
+	
 	AbstractModel(std::vector<Street> &strts){
 	srand(time(0));
 		all_streets = strts;
@@ -89,6 +90,7 @@ class AbstractModel{
 			flag2 = 1;
 		}
 		
+		/*
 		//debug
 		std::cout<<"cross_roads: ";
 		for(int i = 0;i<all_cross_roads.size();i++) std::cout<<all_cross_roads[i].number<<" ";//here debug
@@ -106,7 +108,7 @@ class AbstractModel{
 		std::cout<<std::endl;
 		}
 		
-		
+		*/
 		for(int i = 0;i<all_streets.size();i++) std::cout<<"this street: "<<all_streets[i].number<<" "<<all_streets[i].cross[0].number<<" "<<all_streets[i].cross[1].number<<std::endl;//here debug
 		std::cout<<std::endl;
 		//here
@@ -114,26 +116,38 @@ class AbstractModel{
 		
 		srand(time(0));
 		int n;
-		for(int i = 0;i<1;i++){
-		n = rand()%(all_streets.size());
-		machines.push_back(Machine(all_streets[n],all_streets));
+		for(int i = 0;i<count_of_cars;i++){
+			n = rand()%(all_streets.size());
+			machines.push_back(Machine(all_streets[n],all_streets));
 		}
-		
+		clock.restart();
+		time1 = clock.getElapsedTime();
+		physics();
+		//std::cout<<"@wtf here"<<std::endl;//debug
 	}
 	
 	
 	void checking(){
 	int k = 0;
+
 	srand(time(0));
 	int n = rand()%(all_streets.size()); 
+//	/*
 	for(int j = 0;j<machines.size();j++)
 	if((machines[j].dx!=0||machines[j].dy!=0))  k++;
-		if(k<1) machines.push_back(Machine(all_streets[n],all_streets));
-		
-		for(int j = 0;j<machines.size();j++)
-			if(machines[j].is_way_completed) machines.erase(machines.begin()+j);
+
+	if(k<count_of_cars) machines.push_back(Machine(all_streets[n],all_streets));
+	//*/
+	for(int j = 0;j<machines.size();j++)
+		if(machines[j].is_way_completed) machines.erase(machines.begin()+j);
 	}
-	
+	/*
+	for(int i = 0;machines.size()<count_of_cars;i++){
+		machines.push_back(Machine(all_streets[n],all_streets));
+		n = rand()%(all_streets.size()); 
+	}
+}
+	*/
 	
 	void save(){
 	std::ofstream file("AbstractModel.txt");
@@ -166,6 +180,10 @@ class AbstractModel{
 	
 	void physics(){
 	time2 = clock.getElapsedTime();
+	
+	
+	//std::cout<<"time1 = "<<time1.asSeconds()<<" time2 = "<<time2.asSeconds()<<" dt = "<<(double)(time2-time1).asSeconds()<<std::endl<<std::endl;//debug
+	
 	float t = (time2-time1).asSeconds();
 	for(Machine &m: machines){
 		m.move(t);
