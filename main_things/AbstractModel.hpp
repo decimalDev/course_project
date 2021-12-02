@@ -12,7 +12,7 @@ class AbstractModel{
 	std::vector<Street> all_streets;
 	std::vector<Machine> machines;
 	std::vector<CrossRoads> all_cross_roads;
-	int count_of_cars = 5;
+	int count_of_cars = 2;
 	sf::Time time1;
 	sf::Time time2;
 	sf::Clock clock;
@@ -120,10 +120,21 @@ class AbstractModel{
 			n = rand()%(all_streets.size());
 			machines.push_back(Machine(all_streets[n],all_streets));
 		}
+		
+		for(int i = 0;i<machines.size();i++){
+		std::vector<Machine>::iterator it = machines.end()-1;
+		int f = 0;
+		Machine m1 = *it;
+		for(Machine m:machines)
+			if((m1.x-m.x)*(m1.x-m.x) + (m1.y-m.y)*(m1.y-m.y)<2500&&m.way==m1.way) f = 1;
+		if(f) machines.erase(machines.end()-1);
+		std::cout<<"@wtf here"<<std::endl;//debug
+		}
+		
 		clock.restart();
 		time1 = clock.getElapsedTime();
 		physics();
-		//std::cout<<"@wtf here"<<std::endl;//debug
+		
 	}
 	
 	
@@ -135,8 +146,16 @@ class AbstractModel{
 //	/*
 	for(int j = 0;j<machines.size();j++)
 	if((machines[j].dx!=0||machines[j].dy!=0))  k++;
-
-	if(k<count_of_cars) machines.push_back(Machine(all_streets[n],all_streets));
+	std::vector<Machine>::iterator it;
+	if(k<count_of_cars){
+		machines.push_back(Machine(all_streets[n],all_streets));
+		it = machines.end()-1;
+		int f = 0;
+		Machine m1 = *it;
+		for(Machine m:machines)
+		if((m1.x-m.x)*(m1.x-m.x) + (m1.y-m.y)*(m1.y-m.y)<2500&&m.way==m1.way) f = 1;
+		if(f) machines.erase(machines.end()-1);
+	}
 	//*/
 	for(int j = 0;j<machines.size();j++)
 		if(machines[j].is_way_completed) machines.erase(machines.begin()+j);

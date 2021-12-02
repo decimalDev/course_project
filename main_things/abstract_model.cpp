@@ -83,7 +83,7 @@ void Mode1(std::vector<sf::Vector2f> &lines, sf::Vector2f &localPosition, sf::Ci
 			shape.setPosition(lines[i]);
 		
 	}
-}
+	}
 
 void Mode3(std::vector<sf::Vector2f> &lines, sf::Vector2f &localPosition, sf::CircleShape &shape2, sf::RenderWindow &window){
 	for(int i = 0;i<lines.size();i++){
@@ -212,7 +212,7 @@ AbstractModel abstract_model_view(){
 						//lines = lines2;
 						start(abstractModel,text,mode,clock,started,time1);
 						}
-					}
+					}else if(event.key.code==sf::Keyboard::Q&&mode==2) return abstractModel;
 				break;
 				
 				case sf::Event::MouseButtonReleased:
