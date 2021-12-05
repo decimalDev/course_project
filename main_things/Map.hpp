@@ -4,56 +4,45 @@
 int street_width = 60;
 int w_width1 = 800,w_height1 = 800;
 
-class Map_Street{
-	public:
-	Street *street;
-	sf::RectangleShape rectangle;
-	Map_Street(Street &str){
-		street = &str;
-		rectangle = sf::RectangleShape(sf::Vector2f(street->length,street_width));
-		rectangle.setOrigin(0,street_width/2);
-		rectangle.setPosition(street->cross[0].point);
-		if(street->street_dx>0)
-		rectangle.setRotation(atan(street->street_dy/street->street_dx)*180/3.14);
-	else rectangle.setRotation(atan(street->street_dy/street->street_dx)*180/3.14+180);
-		rectangle.setFillColor(sf::Color(200,200,200));
-	}
-};
-
-class Map_Machine{
-	public:
-	sf::RectangleShape rectangle;
-	Machine *machine;
-	Map_Machine(Machine &m){
-		machine = &m;
-		float length = 20.f;
-		float width = 10.f;
-		rectangle = sf::RectangleShape(sf::Vector2f(length,width));
-		rectangle.setOrigin(length/2,width/2);
-		rectangle.setPosition(machine->x,machine->y);
-		rectangle.setRotation(atan(machine->dy/machine->dx)*180/3.14);
-		rectangle.setFillColor(sf::Color::Red);
-	}
-};
-
-
 class Map{
 	public:
 	int num;
 	AbstractModel *abstract_model;
+	std::vector<sf::RectangleShape> street_shapes;
 	
 	Map(int w_width, int w_height,AbstractModel &abstractModel){
 		abstract_model = &abstractModel;
+		//defining streets shapes
+		for(int i = 0;i<abstract_model->all_streets.size();i++){
+			Street* street = &(abstract_model->all_streets[i]);
+			sf::RectangleShape rectangle = sf::RectangleShape(sf::Vector2f(street->length,street_width));
+			rectangle.setOrigin(0,street_width/2);
+			rectangle.setPosition(street->cross[0].point);
+			if(street->street_dx>0)
+				rectangle.setRotation(atan(street->street_dy/street->street_dx)*180/3.14);
+			else if(street->street_dx==0)
+				if(street->street_dy>0) rectangle.setRotation(90);
+				else rectangle.setRotation(-90);
+			else rectangle.setRotation(atan(street->street_dy/street->street_dx)*180/3.14+180);
+			rectangle.setFillColor(sf::Color(200,200,200));
+			street_shapes.push_back(rectangle);
+		}
+		
 	}
+	
+	void draw_streets(sf::RenderWindow &window){
+		for(int i = 0;i<street_shapes.size();i++)
+			window.draw(street_shapes[i]);
+	}
+	void draw_machines(sf::RenderWindow &window){
+		for(int i = 0;i<abstract_model->machines.size();i++){
+			window.draw(abstract_model->machines[i].rectangle);
+		}
+	}
+	
 	void draw(sf::RenderWindow &window){
-		for(Street &s: abstract_model->all_streets){
-			Map_Street str(s);
-			window.draw(str.rectangle);
-		}
-		for(Machine &s: abstract_model->machines){
-			Map_Machine mach(s);
-			window.draw(mach.rectangle);
-		}
+		draw_streets(window);
+		draw_machines(window);
 	}
 	
 	void loop(){
