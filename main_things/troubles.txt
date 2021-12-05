@@ -1,7 +1,29 @@
+
+стандартный рандомайзер при одинаковом времени выдает те же значения
+
+иногда программа просто падает
+
+переписать гнерации пути машины
+			if(num!=-1&&str.cross[1].number==all_streets->at(way[way.size()-2]).cross[1].number){???действительно ли срабатывает?
+				n = rand()%(str.last_streets.size());
+				num = str.last_streets[n];
+				
+			}else if(num!=-1&&str.cross[1].number==all_streets->at(way[way.size()-2]).cross[0].number){
+					n = rand()%(str.last_streets.size());
+					num = str.last_streets[n];
+					
+			}else if(num==-1&&str.cross[1].number==cur_cross.number){
+					n = rand()%(str.last_streets.size());
+					num = str.last_streets[n];
+			}<--------------Заменить на более короткий
+
+
+когда дорог больше 1 тоо возникает ошибки с машинами в начале программы в конструкторе AbstarctModel
+
 иногда прога вылетатет из за  машин. скорее проблема в определении пути машины тк иногда оно не правильно видит конец
 дойдя до конца почему то они ломаются
 
-Failed to retrieve pixel format information
+Failed to retrieve pixel format information//solved
 
 иногда машина может застрять в одном из пересечении дорог и бесконечно там крутиться
 

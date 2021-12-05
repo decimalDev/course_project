@@ -1,37 +1,481 @@
-AbstractModel_size: 3
+AbstractModel_size: 40
 Street:
-CrossRoads: 185 526
-CrossRoads: 502 175
+CrossRoads: 385 727
+CrossRoads: 377 559
 number: 0
-length: 472.959
-street_dx: 0.670249
-street_dy: -0.742137
+length: 168.19
+street_dx: -0.0475652
+street_dy: -0.998868
 is_last_street: 0
 next_streets: 
-size: 1
-1 
+size: 3
+1 6 7 
 
 Street:
-CrossRoads: 502 175
-CrossRoads: 622 659
+CrossRoads: 377 559
+CrossRoads: 382 397
 number: 1
-length: 498.654
-street_dx: 0.240648
-street_dy: 0.970613
+length: 162.077
+street_dx: 0.0308495
+street_dy: -0.999524
 is_last_street: 0
 next_streets: 
-size: 1
-2 
+size: 3
+2 8 9 
 
 Street:
-CrossRoads: 622 659
-CrossRoads: 185 526
+CrossRoads: 382 397
+CrossRoads: 379 267
 number: 2
-length: 456.791
-street_dx: -0.956674
-street_dy: -0.291162
+length: 130.035
+street_dx: -0.0230708
+street_dy: -0.999734
+is_last_street: 0
+next_streets: 
+size: 3
+3 10 11 
+
+Street:
+CrossRoads: 379 267
+CrossRoads: 379 101
+number: 3
+length: 166
+street_dx: 0
+street_dy: -1
+is_last_street: 0
+next_streets: 
+size: 2
+12 13 
+
+Street:
+CrossRoads: 385 727
+CrossRoads: 600 726
+number: 4
+length: 215.002
+street_dx: 0.999989
+street_dy: -0.00465111
+is_last_street: 0
+next_streets: 
+size: 2
+14 22 
+
+Street:
+CrossRoads: 385 727
+CrossRoads: 205 728
+number: 5
+length: 180.003
+street_dx: -0.999985
+street_dy: 0.00555547
+is_last_street: 0
+next_streets: 
+size: 2
+18 31 
+
+Street:
+CrossRoads: 377 559
+CrossRoads: 590 571
+number: 6
+length: 213.338
+street_dx: 0.998417
+street_dy: 0.0562488
+is_last_street: 0
+next_streets: 
+size: 4
+14 15 23 14 
+
+Street:
+CrossRoads: 377 559
+CrossRoads: 196 561
+number: 7
+length: 181.011
+street_dx: -0.999939
+street_dy: 0.011049
+is_last_street: 0
+next_streets: 
+size: 4
+18 19 32 18 
+
+Street:
+CrossRoads: 382 397
+CrossRoads: 613 412
+number: 8
+length: 231.486
+street_dx: 0.997898
+street_dy: 0.0647986
+is_last_street: 0
+next_streets: 
+size: 4
+15 16 24 15 
+
+Street:
+CrossRoads: 382 397
+CrossRoads: 184 402
+number: 9
+length: 198.063
+street_dx: -0.999681
+street_dy: 0.0252445
+is_last_street: 0
+next_streets: 
+size: 4
+19 20 33 19 
+
+Street:
+CrossRoads: 379 267
+CrossRoads: 610 266
+number: 10
+length: 231.002
+street_dx: 0.999991
+street_dy: -0.00432896
+is_last_street: 0
+next_streets: 
+size: 4
+16 17 25 16 
+
+Street:
+CrossRoads: 379 267
+CrossRoads: 147 285
+number: 11
+length: 232.697
+street_dx: -0.997004
+street_dy: 0.0773537
+is_last_street: 0
+next_streets: 
+size: 4
+20 21 34 20 
+
+Street:
+CrossRoads: 379 101
+CrossRoads: 643 132
+number: 12
+length: 265.814
+street_dx: 0.993176
+street_dy: 0.116623
+is_last_street: 0
+next_streets: 
+size: 3
+17 26 17 
+
+Street:
+CrossRoads: 379 101
+CrossRoads: 126 121
+number: 13
+length: 253.789
+street_dx: -0.99689
+street_dy: 0.0788055
+is_last_street: 0
+next_streets: 
+size: 3
+21 35 21 
+
+Street:
+CrossRoads: 600 726
+CrossRoads: 590 571
+number: 14
+length: 155.322
+street_dx: -0.0643823
+street_dy: -0.997925
+is_last_street: 0
+next_streets: 
+size: 4
+6 6 15 23 
+
+Street:
+CrossRoads: 590 571
+CrossRoads: 613 412
+number: 15
+length: 160.655
+street_dx: 0.143164
+street_dy: -0.989699
+is_last_street: 0
+next_streets: 
+size: 4
+8 8 16 24 
+
+Street:
+CrossRoads: 613 412
+CrossRoads: 610 266
+number: 16
+length: 146.031
+street_dx: -0.0205436
+street_dy: -0.999789
+is_last_street: 0
+next_streets: 
+size: 4
+10 10 17 25 
+
+Street:
+CrossRoads: 610 266
+CrossRoads: 643 132
+number: 17
+length: 138.004
+street_dx: 0.239124
+street_dy: -0.970989
+is_last_street: 0
+next_streets: 
+size: 3
+12 12 26 
+
+Street:
+CrossRoads: 205 728
+CrossRoads: 196 561
+number: 18
+length: 167.242
+street_dx: -0.0538141
+street_dy: -0.998551
+is_last_street: 0
+next_streets: 
+size: 4
+7 7 19 32 
+
+Street:
+CrossRoads: 196 561
+CrossRoads: 184 402
+number: 19
+length: 159.452
+street_dx: -0.0752577
+street_dy: -0.997164
+is_last_street: 0
+next_streets: 
+size: 4
+9 9 20 33 
+
+Street:
+CrossRoads: 184 402
+CrossRoads: 147 285
+number: 20
+length: 122.711
+street_dx: -0.301521
+street_dy: -0.953459
+is_last_street: 0
+next_streets: 
+size: 4
+11 11 21 34 
+
+Street:
+CrossRoads: 147 285
+CrossRoads: 126 121
+number: 21
+length: 165.339
+street_dx: -0.127012
+street_dy: -0.991901
+is_last_street: 0
+next_streets: 
+size: 3
+13 13 35 
+
+Street:
+CrossRoads: 600 726
+CrossRoads: 742 716
+number: 22
+length: 142.352
+street_dx: 0.997529
+street_dy: -0.0702486
 is_last_street: 0
 next_streets: 
 size: 1
-0 
+27 
+
+Street:
+CrossRoads: 590 571
+CrossRoads: 714 567
+number: 23
+length: 124.064
+street_dx: 0.99948
+street_dy: -0.0322413
+is_last_street: 0
+next_streets: 
+size: 3
+27 28 27 
+
+Street:
+CrossRoads: 613 412
+CrossRoads: 755 422
+number: 24
+length: 142.352
+street_dx: 0.997529
+street_dy: 0.0702486
+is_last_street: 0
+next_streets: 
+size: 3
+28 29 28 
+
+Street:
+CrossRoads: 610 266
+CrossRoads: 738 276
+number: 25
+length: 128.39
+street_dx: 0.996962
+street_dy: 0.0778877
+is_last_street: 0
+next_streets: 
+size: 3
+29 30 29 
+
+Street:
+CrossRoads: 643 132
+CrossRoads: 757 135
+number: 26
+length: 114.039
+street_dx: 0.999654
+street_dy: 0.0263067
+is_last_street: 0
+next_streets: 
+size: 2
+30 30 
+
+Street:
+CrossRoads: 742 716
+CrossRoads: 714 567
+number: 27
+length: 151.608
+street_dx: -0.184687
+street_dy: -0.982797
+is_last_street: 0
+next_streets: 
+size: 3
+23 23 28 
+
+Street:
+CrossRoads: 714 567
+CrossRoads: 755 422
+number: 28
+length: 150.685
+street_dx: 0.272091
+street_dy: -0.962272
+is_last_street: 0
+next_streets: 
+size: 3
+24 24 29 
+
+Street:
+CrossRoads: 755 422
+CrossRoads: 738 276
+number: 29
+length: 146.986
+street_dx: -0.115657
+street_dy: -0.993289
+is_last_street: 0
+next_streets: 
+size: 3
+25 25 30 
+
+Street:
+CrossRoads: 738 276
+CrossRoads: 757 135
+number: 30
+length: 142.274
+street_dx: 0.133545
+street_dy: -0.991043
+is_last_street: 0
+next_streets: 
+size: 2
+26 26 
+
+Street:
+CrossRoads: 205 728
+CrossRoads: 38 718
+number: 31
+length: 167.299
+street_dx: -0.998212
+street_dy: -0.0597732
+is_last_street: 0
+next_streets: 
+size: 1
+36 
+
+Street:
+CrossRoads: 196 561
+CrossRoads: 31 566
+number: 32
+length: 165.076
+street_dx: -0.999541
+street_dy: 0.0302891
+is_last_street: 0
+next_streets: 
+size: 3
+36 37 36 
+
+Street:
+CrossRoads: 184 402
+CrossRoads: 37 407
+number: 33
+length: 147.085
+street_dx: -0.999422
+street_dy: 0.0339939
+is_last_street: 0
+next_streets: 
+size: 3
+37 38 37 
+
+Street:
+CrossRoads: 147 285
+CrossRoads: 34 281
+number: 34
+length: 113.071
+street_dx: -0.999374
+street_dy: -0.0353761
+is_last_street: 0
+next_streets: 
+size: 3
+38 39 38 
+
+Street:
+CrossRoads: 126 121
+CrossRoads: 24 118
+number: 35
+length: 102.044
+street_dx: -0.999568
+street_dy: -0.0293991
+is_last_street: 0
+next_streets: 
+size: 2
+39 39 
+
+Street:
+CrossRoads: 38 718
+CrossRoads: 31 566
+number: 36
+length: 152.161
+street_dx: -0.0460039
+street_dy: -0.998941
+is_last_street: 0
+next_streets: 
+size: 3
+32 32 37 
+
+Street:
+CrossRoads: 31 566
+CrossRoads: 37 407
+number: 37
+length: 159.113
+street_dx: 0.037709
+street_dy: -0.999289
+is_last_street: 0
+next_streets: 
+size: 3
+33 33 38 
+
+Street:
+CrossRoads: 37 407
+CrossRoads: 34 281
+number: 38
+length: 126.036
+street_dx: -0.0238028
+street_dy: -0.999717
+is_last_street: 0
+next_streets: 
+size: 3
+34 34 39 
+
+Street:
+CrossRoads: 34 281
+CrossRoads: 24 118
+number: 39
+length: 163.306
+street_dx: -0.0612346
+street_dy: -0.998123
+is_last_street: 0
+next_streets: 
+size: 2
+35 35 
 

@@ -48,7 +48,7 @@ void PressedLeftButtonMouse(sf::Vector2f &localPosition,std::vector<sf::Vector2f
 			lines.push_back(localPosition);
 			
 		}
-	else if(mode==1){ // mode = 1 режим когда надо выбрать точку чтобы перейти в режим 0 где мы создаем путь
+	else if(mode==1){ // mode = 1 режим когда надо выбрать точку чтобы перейти в режим 0 где мы создаем путь выбрав вторую точку
 		for(int i = 0;i<lines.size();i++){
 		localPosition.x = (float) sf::Mouse::getPosition(window).x;
 		localPosition.y = (float) sf::Mouse::getPosition(window).y;
@@ -96,19 +96,7 @@ void Mode3(std::vector<sf::Vector2f> &lines, sf::Vector2f &localPosition, sf::Ci
 	}
 }
 
-void draw_AbstractModel(AbstractModel &abstractModel,sf::Clock &clock,sf::Time &time1, sf::Time &time2, sf::RenderWindow &window){
-	sf::Vertex line[2];
-	
-	for(Street &s: abstractModel.all_streets){
-		line[0].position = s.cross[0].point;
-		line[1].position = s.cross[1].point;
-		window.draw(line,2,sf::Lines);
-	}
-	
-	for(Machine &m: abstractModel.machines)
-		window.draw(m.rectangle);
-	
-}
+
 
 AbstractModel abstract_model_view(){
 	int w_width = 800;
@@ -130,10 +118,13 @@ AbstractModel abstract_model_view(){
 	text.setStyle(sf::Text::Bold);
 	text.setPosition(0,0);
 	
+	int mode = 0;
+	
 	sf::Clock clock;
 	sf::Time time = clock.getElapsedTime();
 	char stime[2];
-	stime[0] = ((int)time.asSeconds())%10+'0';
+	//stime[0] = ((int)time.asSeconds())%10+'0';
+	stime[0] = mode+'0';
 	stime[1] = '\0';
 	
 	sf::Text text1;
@@ -145,7 +136,7 @@ AbstractModel abstract_model_view(){
 	text1.setStyle(sf::Text::Bold);
 	text1.setPosition(200,0);
 	
-	int mode = 0;
+	
 	int started = 0;
 
 	sf::CircleShape shape(5);
@@ -196,11 +187,11 @@ AbstractModel abstract_model_view(){
 						if(mode==0){
 							mode = 3;
 						}
-					}else if(event.key.code==sf::Keyboard::S){ //save map not avaible
+					}else if(event.key.code==sf::Keyboard::S&&mode==2){ //save map not avaible
 						abstractModel.save();
 					}
 					else if(event.key.code==sf::Keyboard::L){ //loading map not avaible
-						if(mode==1||mode==2){
+						if(mode==1||mode==2||mode==0){
 						lines.clear();
 						streets.clear();
 						abstractModel.load_AbstractModel();
@@ -225,7 +216,8 @@ AbstractModel abstract_model_view(){
 		}
 		
 		time = clock.getElapsedTime();
-		stime[0] = ((int)time.asSeconds())%10+'0';
+		//stime[0] = ((int)time.asSeconds())%10+'0';
+		stime[0] = mode+'0';
 		stime[1] = '\0';
 		text1.setString(stime);
 		
@@ -249,7 +241,7 @@ AbstractModel abstract_model_view(){
 		}
 		
 		if(mode==2){
-		draw_AbstractModel(abstractModel, clock, time1, time2, window);
+		abstractModel.draw_AbstractModel(window);
 		abstractModel.physics();
 		}
 		frame++;
@@ -263,4 +255,3 @@ AbstractModel abstract_model_view(){
 //	}
 	return abstractModel;
 }
-//g++ abstract_model.cpp -o test.exe -I"C:\Users\Hp\Desktop\SFML-2.5.1\include" -L"C:\Users\Hp\Desktop\SFML-2.5.1\lib" -lsfml-graphics -lsfml-system -lsfml-network -lsfml-window -lsfml-audio -lopengl32

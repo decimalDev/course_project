@@ -13,8 +13,8 @@ class Street{
 	float street_dx;
 	float street_dy;
 	int is_last_street;
-	std::vector<int> next_streets;
-	std::vector<int> last_streets;
+	std::vector<int> next_streets;//store numbers of streets
+	std::vector<int> last_streets;//store numbers of streets
 	Street(){}
 	Street(CrossRoads crs1, CrossRoads crs2){
 	is_last_street = 1;
