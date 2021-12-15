@@ -4,7 +4,7 @@
 #include<cmath>
 #include<iostream>
 #include<fstream>
-#include "Street.hpp"
+#include "TrafficLight.hpp"
 //debug
 class Machine{
 	public:
@@ -25,9 +25,10 @@ class Machine{
 	CrossRoads cur_cross;//start of current street
 	std::vector<int> way1;
 	sf::RectangleShape rectangle;
+	sf::RectangleShape model;
 	sf::Color color;
 	std::vector<Street>* all_streets;
-	float traversed path;
+	float traversed_path;
 	
 	void showInf(){
 		std::cout<<"*********************"<<std::endl;
@@ -186,6 +187,11 @@ class Machine{
 		rectangle = sf::RectangleShape(sf::Vector2f(length,width));
 		rectangle.setOrigin(length/2,width/2);
 		rectangle.setFillColor(sf::Color::Red);
+		
+		model = sf::RectangleShape(sf::Vector2f(length,width));
+		model.setOrigin(length/2,width/2);
+		model.setFillColor(sf::Color::Red);
+		
 		this->street = street1; //defining current street
 		
 		std::cout<<"Machine:"<<"number of street: "<<street.number<<std::endl;//debug
@@ -205,13 +211,14 @@ class Machine{
 		
 		srand(time(0));
 		
-		velocity = 50+rand()%150;
+		velocity = 50+(rand()+way.size()*way[0])%150;//for more randomizing
 		rectangle.setPosition(sf::Vector2f(x,y));
-		
+		model.setPosition(sf::Vector2f(x,y));
 		
 		//generate()
-		color = sf::Color(rand()%255,rand()%255,rand()%255);
+		color = sf::Color((rand()+way.size()*way[0])%255,(rand()+way.size()*way[0])%255,(rand()+way.size()*way[0])%255);
 		rectangle.setFillColor(color);
+		model.setFillColor(color);
 		
 		//debug
 		//showInf();
@@ -235,6 +242,22 @@ class Machine{
 		y+=time*dy*velocity;
 		rectangle.setPosition(sf::Vector2f(x,y));
 		rectangle.setRotation(atan(dy/dx)*180/3.14);//rad to grad
+		
+		float ang = atan(dy/dx);
+		model.setRotation(ang*180/3.14);//rad to grad
+		
+		
+		if(dx==0){
+			if(dy>0) ang = 3.14;
+			else ang = -3.14;
+		}else if(dx<0) ang = ang+3.14;
+
+		
+		int dist = 20;
+		model.setPosition(sf::Vector2f(x+cos(ang)*dist - sin(ang)*dist ,y+sin(ang)*dist+cos(ang)*dist));
+		//model.setPosition(sf::Vector2f(x - 1*dist ,y+1*dist));
+		
+		
 		/* debug
 		std::cout<<"car_next x "<<x<<" car_next y "<<y<<std::endl;
 		std::cout<<"car_next dx "<<dx<<" car_next dy "<<dy<<std::endl;
@@ -251,38 +274,44 @@ class Machine{
 	
 	
 	void next_Street(std::vector<Street> &all_streets){
-	if(all_streets[way[street_count]].is_last_street){
+	std::cout<<"Machine:"<<"next_Street"<<std::endl;//debug
+	
+	std::cout<<"Machine:"<<"next_Street condition 1"<<std::endl;//debug
+	//std::cout<<"Machine:"<<"next_Street condition 1: str count: "<<street_count<<" size: "<<way.size()<<" str: "<<all_streets[way[street_count]].is_last_street<<std::endl;//debug
+	if(street_count>=way.size()||all_streets[way[street_count]].is_last_street){
 		is_way_completed = 1;
 		dx = 0;
 		dy = 0;
+		std::cout<<"Machine:"<<"next_Street_end condition 1"<<std::endl;//debug
 		return;
 	}
 	street_count++;
 	
-	if(way.size()==street_count){
-		is_way_completed = 1;
-		dx = 0;
-		dy = 0;
-		return;
-	}
 	//if(street_count==way.size()-1&&way[0] == way.back()) street_count = 0;
 	
-	if(way.size()==0){
+	std::cout<<"Machine:"<<"next_Street condition 3"<<std::endl;//debug
+	if(street_count>=way.size()||way.size()==0){
 		is_way_completed = 1;
 		dx = 0;
 		dy = 0;
 		return;
 	}
 	//std::cout<<"str count: "<<street_count<<" "<<way.size()<<std::endl;//debug
+	std::cout<<"Machine:"<<"next_Street condition 4"<<std::endl;//debug
+	/*
+	std::cout<<"Machine:"<<"next_Street condition 4: "<<next_cross.number<<" "<<street.cross[0].number<<std::endl;//debug
 	if(next_cross.number==street.cross[0].number){
 		
 	}
-		
+	*/
+	std::cout<<"Machine:"<<"next_Street expression 1"<<std::endl;//debug
+	std::cout<<"Machine:"<<"next_Street expression 1: str count"<<street_count<<" size: "<<way.size()<<std::endl;//debug
 	street = all_streets[way[street_count]];
 	
 	//std::cout<<"next street: "<<street.number<<std::endl;//debug
 	
 	//std::cout<<next_cross.number<<" "<<street.cross[0].number<<std::endl;//debug
+	std::cout<<"Machine:"<<"next_Street condition 5"<<std::endl;//debug
 	if(next_cross.number==street.cross[0].number){
 		dx = street.street_dx;
 		dy = street.street_dy;
@@ -299,7 +328,7 @@ class Machine{
 		x = cur_cross.point.x;
 		y = cur_cross.point.y;
 	}
-	
+	std::cout<<"Machine:"<<"next_Street_end"<<std::endl;//debug
 	}
 };
 //std::cout<<"Machine:"<<"catch me if you can"<<std::endl;//debug

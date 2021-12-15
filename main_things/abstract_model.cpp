@@ -111,7 +111,7 @@ AbstractModel abstract_model_view(){
 	sf::Font font;
 	font.loadFromFile("CyrilicOld.ttf");
 	text.setFont(font);
-	text.setString("drawing mode");
+	text.setString("mode ");
 	text.setCharacterSize(24);
 	text.setFillColor(sf::Color::White);
 	//text.setStyle(sf::Text::Bold | sf::Text::Underlined);

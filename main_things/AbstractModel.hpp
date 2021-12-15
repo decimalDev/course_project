@@ -12,7 +12,8 @@ class AbstractModel{
 	std::vector<Street> all_streets;
 	std::vector<Machine> machines;
 	std::vector<CrossRoads> all_cross_roads;
-	int count_of_cars = 5;
+	std::vector<TrafficLight> all_traffic_lights;
+	int count_of_cars = 10;
 	sf::Time time1;
 	sf::Time time2;
 	sf::Clock clock;
@@ -49,6 +50,7 @@ class AbstractModel{
 	std::cout<<"AbstracModel:"<<"Construct"<<std::endl;//debug
 		srand(time(0));
 		all_streets = strts;
+		count_of_cars = 10;
 		
 		//numbering of cars
 		for(int i = 0;i<all_streets.size();i++){
@@ -153,17 +155,34 @@ class AbstractModel{
 	
 	void checking(){
 		std::cout<<"AbstracModel:"<<"checking"<<std::endl;//debug
+		std::cout<<"AbstracModel:"<<"checking: Cars:size = "<<machines.size()<<std::endl;//debug
 		int k = 0;
 
 		srand(time(0));
 		int n = (rand()+machines.size())%(all_streets.size()); 
+		
+		int f = 1;
+		while(f){
+			f = 0;
+			for(int j = 0;j<machines.size();j++)
+				if(machines[j].is_way_completed||(machines[j].dx==0&&machines[j].dy==0)){
+					f = 1;
+					machines.erase(machines.begin()+j);
+					break;
+				}
+			if(f) break;
+		}
+		
 //	/*
-		for(int j = 0;j<machines.size();j++)
-			if((machines[j].dx!=0||machines[j].dy!=0))  k++;//count of moveable cars 
+		//for(int j = 0;j<machines.size();j++)
+			//if((machines[j].dx!=0||machines[j].dy!=0))  k++;//count of moveable cars 
 	
 		std::vector<Machine>::iterator it;
 	
-		if(k<count_of_cars){//we add only one car in each call
+		std::cout<<"AbstracModel:"<<"checking: Cars:size = "<<machines.size()<<" count_of_cars: "<<count_of_cars<<std::endl;//debug
+		
+		if(machines.size()<count_of_cars){//we add only one car in each call
+			std::cout<<"AbstracModel:"<<"checking: adding a new car"<<std::endl;//debug
 			machines.push_back(Machine(all_streets[n],all_streets));
 			int i = 0;
 			int f = 1;
@@ -190,8 +209,18 @@ class AbstractModel{
 			if(f) machines.erase(machines.end()-1);
 		}
 	//*/
+		
+		/*
 		for(int j = 0;j<machines.size();j++)
 			if(machines[j].is_way_completed) machines.erase(machines.begin()+j);
+		*/
+		
+		std::cout<<"AbstracModel:"<<"checking: Cars:"<<std::endl;//debug
+		std::cout<<"AbstracModel:"<<"checking: Cars:size = "<<machines.size()<<std::endl;//debug
+		for(int j = 0;j<machines.size();j++)
+			std::cout<<machines[j].number<<" ";//debug
+		std::cout<<std::endl;//debug
+		
 		
 		std::cout<<"AbstracModel:"<<"checking_end"<<std::endl;//debug
 	}
@@ -312,6 +341,9 @@ class AbstractModel{
 	}
 	
 	void physics(){
+	
+	std::cout<<"AbstracModel:"<<"physics"<<std::endl;//debug
+	
 	time2 = clock.getElapsedTime();
 	
 	
@@ -327,6 +359,7 @@ class AbstractModel{
 	time1 = time2;
 	checking();
 	//AbstractModel.test2();
+	std::cout<<"AbstracModel:"<<"physics_end"<<std::endl;//debug
 }
 
 void draw_AbstractModel(sf::RenderWindow &window){

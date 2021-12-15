@@ -36,7 +36,7 @@ class Map{
 	}
 	void draw_machines(sf::RenderWindow &window){
 		for(int i = 0;i<abstract_model->machines.size();i++){
-			window.draw(abstract_model->machines[i].rectangle);
+			window.draw(abstract_model->machines[i].model);
 		}
 	}
 	
