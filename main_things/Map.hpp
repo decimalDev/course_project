@@ -15,7 +15,7 @@ class Map{
 		//defining streets shapes
 		for(int i = 0;i<abstract_model->all_streets.size();i++){
 			Street* street = &(abstract_model->all_streets[i]);
-			sf::RectangleShape rectangle = sf::RectangleShape(sf::Vector2f(street->length,street_width));
+			sf::RectangleShape rectangle = sf::RectangleShape(sf::Vector2f(street->length+street_width/2,street_width));
 			rectangle.setOrigin(0,street_width/2);
 			rectangle.setPosition(street->cross[0].point);
 			if(street->street_dx>0)
@@ -43,6 +43,10 @@ class Map{
 	void draw(sf::RenderWindow &window){
 		draw_streets(window);
 		draw_machines(window);
+		
+		for(TrafficLight &l: abstract_model->all_traffic_lights){
+		window.draw(l.shape);
+	}
 	}
 	
 	void loop(){

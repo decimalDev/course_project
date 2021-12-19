@@ -15,6 +15,7 @@ class Machine{
 	float dx;
 	float dy;//unit vector of direction
 	float velocity;
+	float max_velocity;
 	int street_count;
 	int number;
 	int is_way_completed;
@@ -28,7 +29,10 @@ class Machine{
 	sf::RectangleShape model;
 	sf::Color color;
 	std::vector<Street>* all_streets;
-	float traversed_path;
+	float traversed_path = 1;
+	int is_there_machine_in_forward = 0;
+	int is_machine_broken = 0;
+	sf::Time broken_in;
 	
 	void showInf(){
 		std::cout<<"*********************"<<std::endl;
@@ -55,9 +59,10 @@ class Machine{
 		std::cout<<"Machine:"<<"generate_way:"<<"loop"<<std::endl;//debug
 		while(num_of_strs<max_streets){
 			std::cout<<"Machine:"<<"generate_way:"<<"loop: conditions"<<std::endl;//debug
-			std::cout<<"Machine:"<<"generate_way: vector way: ";
-			std::cout<<std::endl;
-			for(int i = 0;i<way.size();i++) std::cout<<way[i];
+			std::cout<<"Machine:"<<"generate_way: vector way: ";//debug
+			std::cout<<std::endl;//debug
+			for(int i = 0;i<way.size();i++) std::cout<<way[i];//debug
+			std::cout<<std::endl;//debug
 			if(str.next_streets.size()==0){//condition if current of iteration street don't have next neighbour street then way is completed
 				std::cout<<"Machine:"<<"generate_way:"<<"loop: first condition"<<std::endl;//debug
 				return;
@@ -212,6 +217,7 @@ class Machine{
 		srand(time(0));
 		
 		velocity = 50+(rand()+way.size()*way[0])%150;//for more randomizing
+		max_velocity = velocity;
 		rectangle.setPosition(sf::Vector2f(x,y));
 		model.setPosition(sf::Vector2f(x,y));
 		
@@ -232,12 +238,14 @@ class Machine{
 	}
 	
 	
-	void move(float time){
-	/* debug
-		std::cout<<"car x "<<x<<" car y "<<y<<std::endl;
-		std::cout<<"car dx "<<dx<<" car dy "<<dy<<std::endl;
-		std::cout<<"$time = "<<time<<std::endl;
-	*/
+	void move(float time,sf::Clock &clock){
+	
+		if(is_machine_broken){
+			if((clock.getElapsedTime()-broken_in).asSeconds()>4) is_way_completed = 1;
+		}
+		
+		if(!is_there_machine_in_forward&&!is_machine_broken) velocity = max_velocity;
+		
 		x+=time*dx*velocity;//troubles in time
 		y+=time*dy*velocity;
 		rectangle.setPosition(sf::Vector2f(x,y));
@@ -255,6 +263,15 @@ class Machine{
 		
 		int dist = 20;
 		model.setPosition(sf::Vector2f(x+cos(ang)*dist - sin(ang)*dist ,y+sin(ang)*dist+cos(ang)*dist));
+		
+		traversed_path = sqrt((next_cross.point.x-cur_cross.point.x)*(next_cross.point.x-cur_cross.point.x) + (next_cross.point.y-cur_cross.point.y)*(next_cross.point.y-cur_cross.point.y)) - sqrt((x-cur_cross.point.x)*(x-cur_cross.point.y) + (y-cur_cross.point.y)*(y-cur_cross.point.y));
+		
+		if(traversed_path<0){
+			is_way_completed = 1;
+			dx = 0;
+			dy = 0;
+		}
+		
 		//model.setPosition(sf::Vector2f(x - 1*dist ,y+1*dist));
 		
 		
@@ -263,6 +280,29 @@ class Machine{
 		std::cout<<"car_next dx "<<dx<<" car_next dy "<<dy<<std::endl;
 		*/
 		
+	}
+	
+	void check_forward(Machine &m,sf::Clock &clock){
+		
+		if(dx==m.dx&&dy==m.dy&&(m.x - x)*dx>0&&(m.y - y)*dy>0){
+			float dist = sqrt((x-m.x)*(x-m.x) + (y-m.y)*(y-m.y));
+			if(dist<50&&!is_machine_broken){
+				velocity = m.velocity;
+				is_there_machine_in_forward = 1;
+			}
+			if(dist<45&&!is_machine_broken){
+				velocity = 0;
+				is_there_machine_in_forward = 1;
+			}
+			if(dist<30&&!is_machine_broken){
+				velocity = 0;
+				is_there_machine_in_forward = 1;
+				is_machine_broken = 1;
+				m.is_machine_broken = 1;
+				m.velocity = 0;
+				broken_in = clock.getElapsedTime();
+			}
+		}
 	}
 	
 	
