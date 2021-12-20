@@ -6,6 +6,10 @@
 #include<fstream>
 #include "Machine.hpp"
 #include<time.h>
+#include "Car.hpp"
+#include "Public_transport.hpp"
+#include "Bus.hpp"
+#include "Train.hpp"
 //erase
 class AbstractModel{
 	public:
@@ -13,7 +17,6 @@ class AbstractModel{
 	std::vector<Machine> machines;
 	std::vector<CrossRoads> all_cross_roads;
 	std::vector<TrafficLight> all_traffic_lights;
-	std::vector<TrafficLight>* error;
 	int count_of_cars = 10;
 	sf::Time time1;
 	sf::Time time2;
@@ -122,7 +125,12 @@ class AbstractModel{
 		int n;
 		for(int i = 0;i<count_of_cars;i++){
 			n = rand()%(all_streets.size());
-			machines.push_back(Machine(all_streets[n],all_streets));
+			switch(rand()%3){
+			case 0: machines.push_back(Car(all_streets[n],all_streets)); break;
+			case 1: machines.push_back(Bus(all_streets[n],all_streets)); break;
+			case 2: machines.push_back(Train(all_streets[n],all_streets)); break;
+			}
+			//machines.push_back(Machine(all_streets[n],all_streets));
 		}
 		
 		std::cout<<"AbstracModel:"<<"number of cars: "<<machines.size()<<std::endl;//debug
@@ -167,7 +175,15 @@ class AbstractModel{
 				std::cout<<"AbstracModel:"<<"TrafficLight second"<<std::endl;//debug
 			}
 		}
-		error = &all_traffic_lights;
+		/*
+		int k;
+		for(int i = 0;i<machines.size();i++){
+			k = rand()%3;
+			if(k==0){
+				machines[i] = Car();
+			}
+		}
+		*/
 		physics();
 		std::cout<<"AbstracModel:"<<"Construct_end: Traffic lights size = "<<all_traffic_lights.size()<<std::endl;//debug
 		
@@ -190,7 +206,7 @@ class AbstractModel{
 		while(f){
 			f = 0;
 			for(int j = 0;j<machines.size();j++)
-				if(machines[j].is_way_completed){//||(machines[j].dx==0&&machines[j].dy==0)
+				if(machines[j].is_way_completed&&!machines[j].is_public_transport){//||(machines[j].dx==0&&machines[j].dy==0)
 					f = 1;
 					machines.erase(machines.begin()+j);
 					break;
@@ -205,7 +221,7 @@ class AbstractModel{
 		
 		if(machines.size()<count_of_cars){//we add only one car in each call
 			std::cout<<"AbstracModel:"<<"checking: adding a new car"<<std::endl;//debug
-			machines.push_back(Machine(all_streets[n],all_streets));
+			machines.push_back(Car(all_streets[n],all_streets));//here i should add other transport. rewrite
 			int i = 0;
 			int f = 1;
 			while(f){//number for new car
@@ -382,7 +398,8 @@ class AbstractModel{
 	
 	float t = (time2-time1).asSeconds();
 	for(Machine &m: machines){
-		m.move(t,clock);
+		Machine* m2 = &m; 
+		m2->move(t,clock);//changed
 		if(m.is_in_cross()){
 			m.next_Street(all_streets);
 		}
