@@ -10,11 +10,11 @@
 #include "Public_transport.hpp"
 #include "Bus.hpp"
 #include "Train.hpp"
-//erase
+//rewrite
 class AbstractModel{
 	public:
 	std::vector<Street> all_streets;
-	std::vector<Machine> machines;
+	std::vector<Machine*> machines;
 	std::vector<CrossRoads> all_cross_roads;
 	std::vector<TrafficLight> all_traffic_lights;
 	int count_of_cars = 10;
@@ -125,10 +125,28 @@ class AbstractModel{
 		int n;
 		for(int i = 0;i<count_of_cars;i++){
 			n = rand()%(all_streets.size());
+			//Machine* mach;
+			Car a;
+			Bus b;
+			Train c;
+			
 			switch(rand()%3){
-			case 0: machines.push_back(Car(all_streets[n],all_streets)); break;
-			case 1: machines.push_back(Bus(all_streets[n],all_streets)); break;
-			case 2: machines.push_back(Train(all_streets[n],all_streets)); break;
+			
+			case 0: 
+			a = Car(all_streets[n],all_streets); 
+			machines.push_back(&a);
+			break;
+			
+			case 1:
+			b = Bus(all_streets[n],all_streets); 
+			machines.push_back(&b);
+			break;
+			
+			case 2:
+			c = Train(all_streets[n],all_streets);
+			machines.push_back(&c);
+			break;
+			
 			}
 			//machines.push_back(Machine(all_streets[n],all_streets));
 		}
@@ -138,21 +156,21 @@ class AbstractModel{
 		
 		//std::cout<<"AbstracModel:"<<"catch me if you can"<<std::endl;//debug
 		//numering of cars
-		for(int i = 0;i<machines.size();i++) machines[i].number = i;
+		for(int i = 0;i<machines.size();i++) machines[i]->number = i;
 		
 		
 		std::cout<<"AbstracModel:"<<"cars: "<<std::endl;//debug
-		for(int i = 0;i<machines.size();i++) std::cout<<machines[i].number<<" ";
+		for(int i = 0;i<machines.size();i++) std::cout<<machines[i]->number<<" ";
 		std::cout<<std::endl;
 		
 	//	/*
 		
 		for(int i = 0;i<machines.size();i++){//deleting near cars in initional moment
-			std::vector<Machine>::iterator it = machines.end()-1;// take last car
+			std::vector<Machine*>::iterator it = machines.end()-1;// take last car
 			int f = 0;
-			Machine m1 = *it;//take last car
-			for(Machine m:machines)
-				if((m1.x-m.x)*(m1.x-m.x) + (m1.y-m.y)*(m1.y-m.y)<2500&&m.number!=m1.number) f = 1;//if distance less than 50 and it not the same car
+			Machine* m1 = *it;//take last car
+			for(Machine* m:machines)
+				if((m1->x-m->x)*(m1->x-m->x) + (m1->y-m->y)*(m1->y-m->y)<2500&&m->number!=m1->number) f = 1;//if distance less than 50 and it not the same car
 			if(f){
 				machines.erase(machines.end()-1);
 			}
@@ -206,7 +224,7 @@ class AbstractModel{
 		while(f){
 			f = 0;
 			for(int j = 0;j<machines.size();j++)
-				if(machines[j].is_way_completed&&!machines[j].is_public_transport){//||(machines[j].dx==0&&machines[j].dy==0)
+				if(machines[j]->is_way_completed&&!machines[j]->is_public_transport){//||(machines[j].dx==0&&machines[j].dy==0)
 					f = 1;
 					machines.erase(machines.begin()+j);
 					break;
@@ -215,19 +233,20 @@ class AbstractModel{
 		}
 		
 	
-		std::vector<Machine>::iterator it;
+		std::vector<Machine*>::iterator it;
 	
 		std::cout<<"AbstracModel:"<<"checking: Cars:size = "<<machines.size()<<" count_of_cars: "<<count_of_cars<<std::endl;//debug
 		
 		if(machines.size()<count_of_cars){//we add only one car in each call
 			std::cout<<"AbstracModel:"<<"checking: adding a new car"<<std::endl;//debug
-			machines.push_back(Car(all_streets[n],all_streets));//here i should add other transport. rewrite
+			Car a(all_streets[n],all_streets);
+			machines.push_back(&a);//here i should add other transport. rewrite
 			int i = 0;
 			int f = 1;
 			while(f){//number for new car
 				f = 0;
-				for(Machine m:machines){
-					if(m.number==i){
+				for(Machine *m:machines){
+					if(m->number==i){
 						i++;
 						f = 1;
 						//std::cout<<"AbstracModel:"<<"it's work"<<std::endl;//debug
@@ -237,12 +256,12 @@ class AbstractModel{
 			}
 		
 			it = machines.end()-1;
-			(*it).number = i;
+			(*it)->number = i;
 			f = 0;
-			Machine m1 = *it;
+			Machine* m1 = *it;
 			
-			for(Machine m:machines)
-				if((m1.x-m.x)*(m1.x-m.x) + (m1.y-m.y)*(m1.y-m.y)<2500&&m.number!=m1.number) f = 1;//if distance less than 50 and it not the same car
+			for(Machine *m:machines)
+				if((m1->x-m->x)*(m1->x-m->x) + (m1->y-m->y)*(m1->y-m->y)<2500&&m->number!=m1->number) f = 1;//if distance less than 50 and it not the same car
 		
 			if(f) machines.erase(machines.end()-1);
 		}
@@ -256,14 +275,14 @@ class AbstractModel{
 		std::cout<<"AbstracModel:"<<"checking: Cars:"<<std::endl;//debug
 		std::cout<<"AbstracModel:"<<"checking: Cars:size = "<<machines.size()<<std::endl;//debug
 		for(int j = 0;j<machines.size();j++)
-			std::cout<<machines[j].number<<" ";//debug
+			std::cout<<machines[j]->number<<" ";//debug
 		std::cout<<std::endl;//debug
 		
 		for(int i = 0;i<machines.size();i++){
-			machines[i].is_there_machine_in_forward = 0;
+			machines[i]->is_there_machine_in_forward = 0;
 			for(int j = 0;j<machines.size();j++){
 				if(i==j) continue; 
-				machines[i].check_forward(machines[j],clock);
+				machines[i]->check_forward(machines[j],clock);
 			}
 		}
 		
@@ -397,11 +416,13 @@ class AbstractModel{
 	//std::cout<<"time1 = "<<time1.asSeconds()<<" time2 = "<<time2.asSeconds()<<" dt = "<<(double)(time2-time1).asSeconds()<<std::endl<<std::endl;//debug
 	
 	float t = (time2-time1).asSeconds();
-	for(Machine &m: machines){
-		Machine* m2 = &m; 
-		m2->move(t,clock);//changed
-		if(m.is_in_cross()){
-			m.next_Street(all_streets);
+	for(Machine* m: machines){
+		Machine* m2 = m; 
+		std::cout<<"there is a problem";
+		m2->move(t,clock);//rewrite
+		std::cout<<"there is a problem";
+		if(m->is_in_cross()){
+			m->next_Street(all_streets);
 		}
 	}
 	time1 = time2;
@@ -421,8 +442,8 @@ void draw_AbstractModel(sf::RenderWindow &window){
 		window.draw(line,2,sf::Lines);
 	}
 	
-	for(Machine &m: machines)
-		window.draw(m.rectangle);
+	for(Machine* m: machines)
+		window.draw(m->rectangle);
 	
 	for(TrafficLight &l: all_traffic_lights){
 		window.draw(l.shape);

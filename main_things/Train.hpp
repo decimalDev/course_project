@@ -2,6 +2,7 @@
 class Train: public Public_transport{
 	public:
 	int a;
+	Train(){}
 	Train(Street street1, std::vector<Street> &all_streets): Public_transport(street1,all_streets){
 		
 	}

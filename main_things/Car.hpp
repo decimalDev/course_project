@@ -6,6 +6,7 @@ class Car: public Machine{
 	Car(Street street1, std::vector<Street> &all_streets): Machine(street1,all_streets){
 	}
 	*/
+	Car(){}
 	void move(float time,sf::Clock &clock) override{
 	
 		if(is_machine_broken){

@@ -185,12 +185,12 @@ class Machine{
 	
 	virtual void move(float time,sf::Clock &clock) = 0;
 	
-	void check_forward(Machine &m,sf::Clock &clock){
+	void check_forward(Machine *m,sf::Clock &clock){
 		
-		if(dx==m.dx&&dy==m.dy&&(m.x - x)*dx>0&&(m.y - y)*dy>0){
-			float dist = sqrt((x-m.x)*(x-m.x) + (y-m.y)*(y-m.y));
+		if(dx==m->dx&&dy==m->dy&&(m->x - x)*dx>0&&(m->y - y)*dy>0){
+			float dist = sqrt((x-m->x)*(x-m->x) + (y-m->y)*(y-m->y));
 			if(dist<50&&!is_machine_broken){
-				velocity = m.velocity;
+				velocity = m->velocity;
 				is_there_machine_in_forward = 1;
 			}
 			if(dist<45&&!is_machine_broken){
@@ -201,8 +201,8 @@ class Machine{
 				velocity = 0;
 				is_there_machine_in_forward = 1;
 				is_machine_broken = 1;
-				m.is_machine_broken = 1;
-				m.velocity = 0;
+				m->is_machine_broken = 1;
+				m->velocity = 0;
 				broken_in = clock.getElapsedTime();
 			}
 		}
