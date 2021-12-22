@@ -1,4 +1,5 @@
 #include "Machine.hpp"
+//there
 class Car: public Machine{
 	public:
 	int p;
@@ -7,7 +8,7 @@ class Car: public Machine{
 	}
 	*/
 	Car(){}
-	void move(float time,sf::Clock &clock) override{
+	virtual void move(float time,sf::Clock &clock) override{
 	
 		if(is_machine_broken){
 			if((clock.getElapsedTime()-broken_in).asSeconds()>4) is_way_completed = 1;
@@ -45,6 +46,7 @@ class Car: public Machine{
 	
 	Car(Street street1, std::vector<Street> &all_streets){
 	std::cout<<"Machine:"<<"Construct"<<std::endl;//debug
+	is_public_transport = 0;
 		srand(time(0));
 		this->all_streets = &all_streets;
 		
@@ -102,4 +104,63 @@ class Car: public Machine{
 		*/
 		std::cout<<"Machine:"<<"Construct_end"<<std::endl;//debug
 	}
+	
+	void next_Street(std::vector<Street> &all_streets) override{
+	std::cout<<"Machine:"<<"next_Street"<<std::endl;//debug
+	
+	std::cout<<"Machine:"<<"next_Street condition 1"<<std::endl;//debug
+	//std::cout<<"Machine:"<<"next_Street condition 1: str count: "<<street_count<<" size: "<<way.size()<<" str: "<<all_streets[way[street_count]].is_last_street<<std::endl;//debug
+	if(street_count>=way.size()||all_streets[way[street_count]].is_last_street){
+		is_way_completed = 1;
+		dx = 0;
+		dy = 0;
+		std::cout<<"Machine:"<<"next_Street_end condition 1"<<std::endl;//debug
+		return;
+	}
+	street_count++;
+	
+	//if(street_count==way.size()-1&&way[0] == way.back()) street_count = 0;
+	
+	std::cout<<"Machine:"<<"next_Street condition 3"<<std::endl;//debug
+	if(street_count>=way.size()||way.size()==0){
+		is_way_completed = 1;
+		dx = 0;
+		dy = 0;
+		return;
+	}
+	//std::cout<<"str count: "<<street_count<<" "<<way.size()<<std::endl;//debug
+	std::cout<<"Machine:"<<"next_Street condition 4"<<std::endl;//debug
+	/*
+	std::cout<<"Machine:"<<"next_Street condition 4: "<<next_cross.number<<" "<<street.cross[0].number<<std::endl;//debug
+	if(next_cross.number==street.cross[0].number){
+		
+	}
+	*/
+	std::cout<<"Machine:"<<"next_Street expression 1"<<std::endl;//debug
+	std::cout<<"Machine:"<<"next_Street expression 1: str count"<<street_count<<" size: "<<way.size()<<std::endl;//debug
+	street = all_streets[way[street_count]];
+	
+	//std::cout<<"next street: "<<street.number<<std::endl;//debug
+	
+	//std::cout<<next_cross.number<<" "<<street.cross[0].number<<std::endl;//debug
+	std::cout<<"Machine:"<<"next_Street condition 5"<<std::endl;//debug
+	if(next_cross.number==street.cross[0].number){
+		dx = street.street_dx;
+		dy = street.street_dy;
+		next_cross = street.cross[1];
+		cur_cross = street.cross[0];
+		x = cur_cross.point.x;
+		y = cur_cross.point.y;
+		
+	}else{
+		dx = -street.street_dx;
+		dy = -street.street_dy;
+		next_cross = street.cross[0];
+		cur_cross = street.cross[1];
+		x = cur_cross.point.x;
+		y = cur_cross.point.y;
+	}
+	std::cout<<"Machine:"<<"next_Street_end"<<std::endl;//debug
+	}
+	
 };

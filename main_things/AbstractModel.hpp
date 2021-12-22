@@ -11,13 +11,14 @@
 #include "Bus.hpp"
 #include "Train.hpp"
 //rewrite
+//there is problem
 class AbstractModel{
 	public:
 	std::vector<Street> all_streets;
 	std::vector<Machine*> machines;
 	std::vector<CrossRoads> all_cross_roads;
 	std::vector<TrafficLight> all_traffic_lights;
-	int count_of_cars = 10;
+	int count_of_cars = 5;
 	sf::Time time1;
 	sf::Time time2;
 	sf::Clock clock;
@@ -55,7 +56,6 @@ class AbstractModel{
 		
 		srand(time(0));
 		all_streets = strts;
-		count_of_cars = 10;
 		
 		//numbering of streets
 		for(int i = 0;i<all_streets.size();i++){
@@ -124,31 +124,26 @@ class AbstractModel{
 		//srand(time(0));
 		int n;
 		for(int i = 0;i<count_of_cars;i++){
+		std::cout<<"AbstracModel:"<<" count_of_cars: "<<count_of_cars<<std::endl;//debug
+		std::cout<<"AbstracModel:"<<"Adding machines "<<std::endl;//debug
 			n = rand()%(all_streets.size());
-			//Machine* mach;
-			Car a;
-			Bus b;
-			Train c;
-			
 			switch(rand()%3){
-			
 			case 0: 
-			a = Car(all_streets[n],all_streets); 
-			machines.push_back(&a);
+			machines.push_back(new Car(all_streets[n],all_streets));
+			std::cout<<"AbstracModel:"<<"crt Car_____________________________________________________________ "<<std::endl;//debug
 			break;
 			
 			case 1:
-			b = Bus(all_streets[n],all_streets); 
-			machines.push_back(&b);
+			machines.push_back(new Bus(all_streets[n],all_streets));
+			std::cout<<"AbstracModel:"<<"crt Bus_____________________________________________________________ "<<std::endl;//debug
 			break;
 			
 			case 2:
-			c = Train(all_streets[n],all_streets);
-			machines.push_back(&c);
+			machines.push_back(new Train(all_streets[n],all_streets));
+			std::cout<<"AbstracModel:"<<"crt Train_____________________________________________________________ "<<std::endl;//debug
 			break;
 			
 			}
-			//machines.push_back(Machine(all_streets[n],all_streets));
 		}
 		
 		std::cout<<"AbstracModel:"<<"number of cars: "<<machines.size()<<std::endl;//debug
@@ -202,7 +197,7 @@ class AbstractModel{
 			}
 		}
 		*/
-		physics();
+		//physics();
 		std::cout<<"AbstracModel:"<<"Construct_end: Traffic lights size = "<<all_traffic_lights.size()<<std::endl;//debug
 		
 		//here it works correctly. there isn't any problem occured
@@ -228,6 +223,8 @@ class AbstractModel{
 					f = 1;
 					machines.erase(machines.begin()+j);
 					break;
+				}else if(machines[j]->is_way_completed&&machines[j]->is_public_transport){
+				machines[j]->next_Street(all_streets);
 				}
 			if(f) break;
 		}
@@ -239,8 +236,8 @@ class AbstractModel{
 		
 		if(machines.size()<count_of_cars){//we add only one car in each call
 			std::cout<<"AbstracModel:"<<"checking: adding a new car"<<std::endl;//debug
-			Car a(all_streets[n],all_streets);
-			machines.push_back(&a);//here i should add other transport. rewrite
+			//Car a = new Car(all_streets[n],all_streets);
+			machines.push_back(new Car(all_streets[n],all_streets));//here i should add other transport. rewrite
 			int i = 0;
 			int f = 1;
 			while(f){//number for new car
@@ -265,13 +262,6 @@ class AbstractModel{
 		
 			if(f) machines.erase(machines.end()-1);
 		}
-	//*/
-		
-		/*
-		for(int j = 0;j<machines.size();j++)
-			if(machines[j].is_way_completed) machines.erase(machines.begin()+j);
-		*/
-		
 		std::cout<<"AbstracModel:"<<"checking: Cars:"<<std::endl;//debug
 		std::cout<<"AbstracModel:"<<"checking: Cars:size = "<<machines.size()<<std::endl;//debug
 		for(int j = 0;j<machines.size();j++)
@@ -418,9 +408,7 @@ class AbstractModel{
 	float t = (time2-time1).asSeconds();
 	for(Machine* m: machines){
 		Machine* m2 = m; 
-		std::cout<<"there is a problem";
-		m2->move(t,clock);//rewrite
-		std::cout<<"there is a problem";
+		m->move(t,clock);//rewrite
 		if(m->is_in_cross()){
 			m->next_Street(all_streets);
 		}
@@ -433,7 +421,6 @@ class AbstractModel{
 
 void draw_AbstractModel(sf::RenderWindow &window){
 	std::cout<<"AbstracModel:"<<"draw_AbstractModel"<<std::endl;//debug
-	std::cout<<"AbstracModel:"<<"draw_AbstractModel: Traffic lights size = "<<all_traffic_lights.size()<<std::endl;//debug
 	sf::Vertex line[2];
 	
 	for(Street &s: all_streets){
@@ -441,13 +428,21 @@ void draw_AbstractModel(sf::RenderWindow &window){
 		line[1].position = s.cross[1].point;
 		window.draw(line,2,sf::Lines);
 	}
+	std::cout<<"AbstracModel:"<<"draw_AbstractModel: machines size = "<<machines.size()<<std::endl;//debug
 	
-	for(Machine* m: machines)
+	for(Machine* m: machines){
+	
 		window.draw(m->rectangle);
+		std::cout<<"AbstracModel:"<<"draw_AbstractModel: inside of condition"<<std::endl;//debug
+	}
 	
+	std::cout<<"AbstracModel:"<<"draw_AbstractModel: inside of condition_end"<<std::endl;//debug
+	
+	std::cout<<"AbstracModel:"<<"draw_AbstractModel: Traffic lights size = "<<all_traffic_lights.size()<<std::endl;//debug
 	for(TrafficLight &l: all_traffic_lights){
 		window.draw(l.shape);
 	}
+	std::cout<<"AbstracModel:"<<"draw_AbstractModel: Traffic lights_end"<<std::endl;//debug
 	std::cout<<"AbstracModel:"<<"draw_AbstractModel_end"<<std::endl;//debug
 }
 
