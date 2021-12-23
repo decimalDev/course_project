@@ -8,9 +8,16 @@
 
 
 class CrossRoads{
-	public:
-	sf::Vector2f point;
+	private:
 	int number;
+	sf::Vector2f point;
+	
+	public:
+	int getNumber(){ return number; }
+	void setNumber(int num){ number = num; }
+	void setPoint(sf::Vector2f point){ this->point = point; }
+	sf::Vector2f getPoint(){ return point; }
+	
 	CrossRoads(){}
 	CrossRoads(sf::Vector2f point){
 		this->point = point;
@@ -20,17 +27,7 @@ class CrossRoads{
 		out<<"CrossRoads: "<<c.point.x<<" "<<c.point.y<<std::endl;
 		return out;
 	}
-	
-	friend std::istream& operator>>(std::istream& in,CrossRoads& r){
-	//std::cout<<"hi"<<std::endl;
-		std::string s;
-		in>>s;
-		
-		int x,y;
-		in>>x>>y;
-		r.point = sf::Vector2f(x,y);
-		return in;
-	}
+
 	CrossRoads& operator=(const CrossRoads& r){
 		this->point = r.point;
 		this->number = r.number;

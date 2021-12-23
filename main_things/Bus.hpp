@@ -1,7 +1,6 @@
 #include "Public_transport.hpp"
 class Bus: public Public_transport{
 	public:
-	int a;
 	Bus(){}
 	Bus(Street street1, std::vector<Street> &all_streets): Public_transport(street1,all_streets){
 		
@@ -52,7 +51,7 @@ class Bus: public Public_transport{
 		}
 		std::cout<<"Bus:"<<"move: angle = "<<angle<<std::endl;//debug
 		
-		traversed_path = sqrt((next_cross.point.x-cur_cross.point.x)*(next_cross.point.x-cur_cross.point.x) + (next_cross.point.y-cur_cross.point.y)*(next_cross.point.y-cur_cross.point.y)) - sqrt((x-cur_cross.point.x)*(x-cur_cross.point.x) + (y-cur_cross.point.y)*(y-cur_cross.point.y));
+		traversed_path = sqrt((next_cross.getPoint().x-cur_cross.getPoint().x)*(next_cross.getPoint().x-cur_cross.getPoint().x) + (next_cross.getPoint().y-cur_cross.getPoint().y)*(next_cross.getPoint().y-cur_cross.getPoint().y)) - sqrt((x-cur_cross.getPoint().x)*(x-cur_cross.getPoint().x) + (y-cur_cross.getPoint().y)*(y-cur_cross.getPoint().y));
 		
 		if(traversed_path<0){
 			is_way_completed = 1;
@@ -60,9 +59,9 @@ class Bus: public Public_transport{
 			dy = 0;
 			return;
 		}
-		std::cout<<"Bus:"<<"move: traversed_path% = "<<traversed_path/sqrt((next_cross.point.x-cur_cross.point.x)*(next_cross.point.x-cur_cross.point.x) + (next_cross.point.y-cur_cross.point.y)*(next_cross.point.y-cur_cross.point.y))<<std::endl;//debug
+		std::cout<<"Bus:"<<"move: traversed_path% = "<<traversed_path/sqrt((next_cross.getPoint().x-cur_cross.getPoint().x)*(next_cross.getPoint().x-cur_cross.getPoint().x) + (next_cross.getPoint().y-cur_cross.getPoint().y)*(next_cross.getPoint().y-cur_cross.getPoint().y))<<std::endl;//debug
 		
-		if(is_stopped==0&&traversed_path/sqrt((next_cross.point.x-cur_cross.point.x)*(next_cross.point.x-cur_cross.point.x) + (next_cross.point.y-cur_cross.point.y)*(next_cross.point.y-cur_cross.point.y))>=0.49&&traversed_path/sqrt((next_cross.point.x-cur_cross.point.x)*(next_cross.point.x-cur_cross.point.x) + (next_cross.point.y-cur_cross.point.y)*(next_cross.point.y-cur_cross.point.y))<=0.51){
+		if(is_stopped==0&&traversed_path/sqrt((next_cross.getPoint().x-cur_cross.getPoint().x)*(next_cross.getPoint().x-cur_cross.getPoint().x) + (next_cross.getPoint().y-cur_cross.getPoint().y)*(next_cross.getPoint().y-cur_cross.getPoint().y))>=0.49&&traversed_path/sqrt((next_cross.getPoint().x-cur_cross.getPoint().x)*(next_cross.getPoint().x-cur_cross.getPoint().x) + (next_cross.getPoint().y-cur_cross.getPoint().y)*(next_cross.getPoint().y-cur_cross.getPoint().y))<=0.51){
 			station_time = clock.getElapsedTime();
 			is_stopped = 1;
 			dx = 0;

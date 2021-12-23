@@ -187,23 +187,8 @@ AbstractModel abstract_model_view(){
 						if(mode==0){
 							mode = 3;
 						}
-					}else if(event.key.code==sf::Keyboard::S&&mode==2){ //save map not avaible
-						abstractModel.save();
 					}
-					else if(event.key.code==sf::Keyboard::L){ //loading map not avaible
-						if(mode==1||mode==2||mode==0){
-						lines.clear();
-						streets.clear();
-						abstractModel.load_AbstractModel();
-						
-						for(int i = 0;i<abstractModel.all_streets.size();i++){
-							lines.push_back(abstractModel.all_streets[i].cross[0].point);
-							lines.push_back(abstractModel.all_streets[i].cross[1].point);
-						}
-						//lines = lines2;
-						start(abstractModel,text,mode,clock,started,time1);
-						}
-					}else if(event.key.code==sf::Keyboard::Q&&mode==2) return abstractModel;
+					else if(event.key.code==sf::Keyboard::Q&&mode==2) return abstractModel;
 				break;
 				
 				case sf::Event::MouseButtonReleased:
@@ -246,12 +231,9 @@ AbstractModel abstract_model_view(){
 		}
 		frame++;
 	
-	//}else{
-			
-//}
+
 		window.display();
-		//std::cout<<"mouse x = "<<sf::Mouse::getPosition(window).x<<" y = "<<sf::Mouse::getPosition(window).y<<std::endl;//debug
 	}
-//	}
+
 	return abstractModel;
 }

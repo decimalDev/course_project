@@ -48,13 +48,13 @@ class Public_transport: public Machine{
 		
 		max_streets = 2+rand()%10;//
 		
-		x = street.cross[0].point.x;
-		y = street.cross[0].point.y;
+		x = street.cross[0].getPoint().x;
+		y = street.cross[0].getPoint().y;
 		next_cross = street.cross[1];
 		cur_cross = street.cross[0];
 		
 		generate_way();
-		//std::cout<<"Machine:"<<"catch me if you can"<<std::endl;//debug
+
 		
 		srand(time(0));
 		
@@ -62,8 +62,7 @@ class Public_transport: public Machine{
 		max_velocity = velocity;
 		rectangle.setPosition(sf::Vector2f(x,y));
 		model.setPosition(sf::Vector2f(x,y));
-		
-		//generate()
+
 		color = sf::Color((rand()+way.size()*way[0])%255,(rand()+way.size()*way[0])%255,(rand()+way.size()*way[0])%255);
 		rectangle.setFillColor(color);
 		model.setFillColor(color);
@@ -83,8 +82,8 @@ class Public_transport: public Machine{
 		this->street = all_streets[way[0]]; 
 		dx = street.street_dx;
 		dy = street.street_dy;
-		x = street.cross[0].point.x;
-		y = street.cross[0].point.y;
+		x = street.cross[0].getPoint().x;
+		y = street.cross[0].getPoint().y;
 		next_cross = street.cross[1];
 		cur_cross = street.cross[0];
 		street_count = 0;
@@ -97,7 +96,7 @@ class Public_transport: public Machine{
 	std::cout<<"Machine:"<<"next_Street"<<std::endl;//debug
 	
 	std::cout<<"Machine:"<<"next_Street condition 1"<<std::endl;//debug
-	//std::cout<<"Machine:"<<"next_Street condition 1: str count: "<<street_count<<" size: "<<way.size()<<" str: "<<all_streets[way[street_count]].is_last_street<<std::endl;//debug
+
 	if(street_count>=way.size()||all_streets[way[street_count]].is_last_street){
 		is_way_completed = 1;
 		dx = 0;
@@ -106,8 +105,7 @@ class Public_transport: public Machine{
 		return;
 	}
 	street_count++;
-	
-	//if(street_count==way.size()-1&&way[0] == way.back()) street_count = 0;
+
 	
 	std::cout<<"Machine:"<<"next_Street condition 3"<<std::endl;//debug
 	if(street_count>=way.size()||way.size()==0){
@@ -118,35 +116,27 @@ class Public_transport: public Machine{
 	}
 	//std::cout<<"str count: "<<street_count<<" "<<way.size()<<std::endl;//debug
 	std::cout<<"Machine:"<<"next_Street condition 4"<<std::endl;//debug
-	/*
-	std::cout<<"Machine:"<<"next_Street condition 4: "<<next_cross.number<<" "<<street.cross[0].number<<std::endl;//debug
-	if(next_cross.number==street.cross[0].number){
-		
-	}
-	*/
+
 	std::cout<<"Machine:"<<"next_Street expression 1"<<std::endl;//debug
 	std::cout<<"Machine:"<<"next_Street expression 1: str count"<<street_count<<" size: "<<way.size()<<std::endl;//debug
 	street = all_streets[way[street_count]];
 	
-	//std::cout<<"next street: "<<street.number<<std::endl;//debug
-	
-	//std::cout<<next_cross.number<<" "<<street.cross[0].number<<std::endl;//debug
 	std::cout<<"Machine:"<<"next_Street condition 5"<<std::endl;//debug
-	if(next_cross.number==street.cross[0].number){
+	if(next_cross.getNumber()==street.cross[0].getNumber()){
 		dx = street.street_dx;
 		dy = street.street_dy;
 		next_cross = street.cross[1];
 		cur_cross = street.cross[0];
-		x = cur_cross.point.x;
-		y = cur_cross.point.y;
+		x = cur_cross.getPoint().x;
+		y = cur_cross.getPoint().y;
 		
 	}else{
 		dx = -street.street_dx;
 		dy = -street.street_dy;
 		next_cross = street.cross[0];
 		cur_cross = street.cross[1];
-		x = cur_cross.point.x;
-		y = cur_cross.point.y;
+		x = cur_cross.getPoint().x;
+		y = cur_cross.getPoint().y;
 	}
 	std::cout<<"Machine:"<<"next_Street_end"<<std::endl;//debug
 	}
